@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import { FaWhatsapp } from 'react-icons/fa';
 import { 
     TrendingUp, 
     Target, 
@@ -17,6 +18,7 @@ import {
     Palette, 
     LineChart, 
     MessageSquare,
+    Phone,
     Activity, 
     Zap, 
     Layers, 
@@ -24,6 +26,7 @@ import {
     Sliders,
     Globe // Added Globe icon for language switch
 } from 'lucide-react';
+
 
 // --- 1. TRANSLATION DATA OBJECT ---
 const translations = {
@@ -243,7 +246,7 @@ const translations = {
             badge: "Expert en Marketing de Performance",
             titleLine1: "Je fais Scaler les Marques.",
             titleLine2: "Avec Profit.",
-            subtitle: "Expertise en marketing de performance. Tracking irréprochable. Discipline stricte des KPI. Prise de décision statistique pour maximiser les résultats et la rentabilité.",
+            subtitle: "Expertise en marketing de performance. Tracking irréprochable. Contrôle strict des KPI. Prise de décision statistique pour maximiser les résultats et la rentabilité.",
             cta1: "Réserver un Appel Stratégique",
             cta2: "Demander un Audit de Performance",
             stat1: "De la stratégie à la mise en œuvre",
@@ -672,7 +675,7 @@ function AppContent() {
             {t.hero.titleLine2}
         </h1>
 
-        {/* Subtitle Area with Profile Picture & Socials (MISE À JOUR) */}
+        {/* Subtitle Area with Profile Picture & Socials */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto mb-12">
             
             {/* Photo de profil */}
@@ -684,14 +687,11 @@ function AppContent() {
                 />
             </div>
 
-            {/* Texte et Liens Sociaux */}
+            {/* Liens Sociaux et Texte */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xl">
-                <p className="text-gray-400 text-lg md:text-xl mb-4">
-                    {t.hero.subtitle}
-                </p>
-
-                {/* NOUVEAUX LIENS SOCIAUX */}
-                <div className="flex space-x-4">
+                
+                {/* LIENS SOCIAUX (AVANT LA DESCRIPTION) */}
+                <div className="flex space-x-4 mb-4">
                     {/* Lien LinkedIn */}
                     <a 
                         href="https://www.linkedin.com/in/clementchappot/"
@@ -700,22 +700,26 @@ function AppContent() {
                         className="text-gray-400 hover:text-yellow-500 transition-colors"
                         aria-label="Profil LinkedIn"
                     >
-                        {/* Assurez-vous d'avoir importé { Linkedin } en haut du fichier */}
                         <Linkedin size={28} />
                     </a>
                     
-                    {/* Lien WhatsApp (wa.me/CodePaysNumero) */}
-                    <a 
-                        href="https://wa.me/41798102112"
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-yellow-500 transition-colors"
-                        aria-label="Contacter sur WhatsApp"
-                    >
-                        {/* Assurez-vous d'avoir importé { MessageSquare } en haut du fichier */}
-                        <MessageSquare size={28} /> 
-                    </a>
+                    {/* Lien WhatsApp (AVEC L'ICÔNE PHONE POUR DÉPANNAGE) */}
+<a 
+    href="https://wa.me/41798102112"
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="text-gray-400 hover:text-yellow-500 transition-colors"
+    aria-label="Contacter sur WhatsApp"
+>
+    {/* Utilisez FaWhatsapp ici après l'avoir importée */}
+    <FaWhatsapp size={28} /> 
+</a>
                 </div>
+                
+                {/* Texte de la description (APRES LES LIENS) */}
+                <p className="text-gray-400 text-lg md:text-xl">
+                    {t.hero.subtitle}
+                </p>
             </div>
         </div>
         
@@ -1022,19 +1026,55 @@ function AppContent() {
             </section>
 
 
-            {/* Footer */}
-            <footer className="bg-slate-900 border-t border-slate-800 py-8 px-6 text-gray-400">
-                <div className="container mx-auto flex flex-col md:flex-row items-center justify-between text-sm">
-                    <div className="mb-4 md:mb-0">
-                        {t.footer.copyright}
-                    </div>
-                    <div className="flex space-x-6">
-                        <a href="#about" className="hover:text-white transition">{t.footer.nav.about}</a>
-                        <a href="#services" className="hover:text-white transition">{t.footer.nav.services}</a>
-                        <a href="#case-studies" className="hover:text-white transition">{t.footer.nav.caseStudies}</a>
-                    </div>
-                </div>
-            </footer>
+{/* Footer */}
+<footer className="bg-slate-900 border-t border-slate-800 py-8 px-6 text-gray-400">
+    <div className="container mx-auto flex flex-col md:flex-row items-center justify-between text-sm">
+        <div className="mb-4 md:mb-0">
+            {t.footer.copyright}
+        </div>
+        
+        {/* Liens de navigation et sociaux groupés */}
+        <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+            
+            {/* Liens de navigation */}
+            <div className="flex space-x-6">
+                <a href="#about" className="hover:text-white transition">{t.footer.nav.about}</a>
+                <a href="#services" className="hover:text-white transition">{t.footer.nav.services}</a>
+                <a href="#case-studies" className="hover:text-white transition">{t.footer.nav.caseStudies}</a>
+            </div>
+
+            {/* Séparateur visuel optionnel (pour les écrans larges) */}
+            <span className="hidden md:block text-slate-700">|</span>
+
+            {/* NOUVEAUX LIENS SOCIAUX */}
+            <div className="flex space-x-4">
+                {/* Lien LinkedIn */}
+                <a 
+                    href="https://www.linkedin.com/in/clementchappot/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-yellow-500 transition-colors"
+                    aria-label="Profil LinkedIn"
+                >
+                    {/* Assurez-vous d'avoir importé { Linkedin } de lucide-react */}
+                    <Linkedin size={20} />
+                </a>
+                
+                {/* Lien WhatsApp */}
+                <a 
+                    href="https://wa.me/41798102112" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-yellow-500 transition-colors"
+                    aria-label="Contacter sur WhatsApp"
+                >
+                    {/* Assurez-vous d'avoir importé { FaWhatsapp } de react-icons/fa */}
+                    <FaWhatsapp size={20} />
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
         </div>
     );
 }
