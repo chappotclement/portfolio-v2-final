@@ -253,11 +253,11 @@ const translations = {
         about: {
             subtitle: "À PROPOS DE CLÉMENT",
             title: "Accélérateur de croissance digitale depuis 8+ ans : De la stratégie au scale.",
-            p1: "Huit années à maîtriser l'ensemble du spectre de la croissance digitale, de l'exécution de campagnes spécialisées à l'architecture d'écosystèmes globaux. Mon expertise couvre le performance marketing avancé, une infrastructure de tracking solide et l'intégration CRM fluide.",
+            p1: "Huit années à maîtriser l'ensemble du spectre de la croissance digitale, de l'exécution de campagnes spécialisées à l'architecture d'écosystèmes globaux. Mon expertise couvre le performance marketing management, une infrastructure de tracking solide et l'intégration CRM fluide.",
             p2: "Ma philosophie est simple : analyse rigoureuse et exécution terrain. Je construis des stratégies pensées pour un scale durable et rentable, où chaque euro est tracké et chaque décision est data-driven.",
             p3: "Track record prouvé en scaling de campagnes sur Meta, Google et les plateformes Native à travers l'Europe, dépassant constamment les objectifs tout en maintenant une efficacité budgétaire stricte.",
             stat1Title: "+180%",
-            stat1Desc: "Croissance des Revenus Annuel",
+            stat1Desc: "Croissance des Revenus Annuels",
             stat2Title: "15M€+",
             stat2Desc: "Dépenses Publicitaires Gérées\nsur toutes les plateformes",
             stat3Title: "-42%",
@@ -445,7 +445,7 @@ const LanguageContext = createContext();
 const LanguageProvider = ({ children }) => {
     // Initialize language from localStorage or default to 'fr' (since the user is French-speaking)
     const storedLang = typeof window !== 'undefined' ? localStorage.getItem('lang') : null;
-    const [language, setLanguage] = useState(storedLang || 'fr');
+    const [language, setLanguage] = useState(storedLang || 'en');
 
     useEffect(() => {
         // Save language to localStorage whenever it changes
