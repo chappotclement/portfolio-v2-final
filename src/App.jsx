@@ -653,27 +653,26 @@ function AppContent() {
                 </nav>
             </header>
 
-            {/* Hero Section */}
-            <section className="pt-32 pb-20 px-6">
-                <div className="container mx-auto text-center">
-                    
-                    {/* Badge */}
-                    <div className="inline-block mb-8">
-                        <span className="border border-yellow-600 text-yellow-500 px-6 py-2 rounded-full text-sm font-medium">
-                            {t.hero.badge}
-                        </span>
-                    </div>
+{/* Hero Section */}
+<section className="pt-32 pb-20 px-6">
+    <div className="container mx-auto text-center">
+        
+        {/* Badge */}
+        <div className="inline-block mb-8">
+            <span className="border border-yellow-600 text-yellow-500 px-6 py-2 rounded-full text-sm font-medium">
+                {t.hero.badge}
+            </span>
+        </div>
 
-                    {/* Main Title */}
-                    <h1 className="text-6xl md:text-7xl font-bold text-white mb-4">
-                        {t.hero.titleLine1}
-                    </h1>
-                    <h1 className="text-6xl md:text-7xl font-bold text-yellow-500 mb-8">
-                        {t.hero.titleLine2}
-                    </h1>
+        {/* Main Title */}
+        <h1 className="text-6xl md:text-7xl font-bold text-white mb-4">
+            {t.hero.titleLine1}
+        </h1>
+        <h1 className="text-6xl md:text-7xl font-bold text-yellow-500 mb-8">
+            {t.hero.titleLine2}
+        </h1>
 
-{/* Subtitle Area with Profile Picture */}
-        {/* On crée une boite flexible pour mettre l'image et le texte côte à côte */}
+        {/* Subtitle Area with Profile Picture & Socials (MISE À JOUR) */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto mb-12">
             
             {/* Photo de profil */}
@@ -685,52 +684,82 @@ function AppContent() {
                 />
             </div>
 
-            {/* Texte (Aligné à gauche sur desktop pour coller à l'image, centré sur mobile) */}
-            <p className="text-gray-400 text-lg md:text-xl text-center md:text-left max-w-xl">
-                {t.hero.subtitle}
-            </p>
-        </div>
-                    {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
-                        <a 
-                            href="#contact"
-                            className="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold hover:bg-yellow-400 transition flex items-center justify-center">
-                            {t.hero.cta1}
-                            <span className="ml-2">→</span>
-                        </a>
-                        <a 
-                            href="#contact" 
-                            className="bg-white text-slate-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition">
-                            {t.hero.cta2}
-                        </a>
-                    </div>
+            {/* Texte et Liens Sociaux */}
+            <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xl">
+                <p className="text-gray-400 text-lg md:text-xl mb-4">
+                    {t.hero.subtitle}
+                </p>
 
-                    {/* Stats/Credentials */}
-                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center text-gray-400">
-                        <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
-                            <TrendingUp className="text-yellow-500" size={24} />
-                            <span>{t.hero.stat1}</span>
-                        </div>
-                        <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
-                            <Target className="text-yellow-500" size={24} />
-                            <span>{t.hero.stat2}</span>
-                        </div>
-                        <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
-                            <BarChart3 className="text-yellow-500" size={24} />
-                            <span>{t.hero.stat3}</span>
-                        </div>
-                    </div>
-
-                    {/* Scroll Indicator */}
-                    <div className="mt-20">
-                        <div className="inline-flex flex-col items-center">
-                            <div className="w-6 h-10 border-2 border-yellow-500 rounded-full flex items-start justify-center p-2">
-                                <div className="w-1 h-3 bg-yellow-500 rounded-full animate-bounce"></div>
-                            </div>
-                        </div>
-                    </div>
+                {/* NOUVEAUX LIENS SOCIAUX */}
+                <div className="flex space-x-4">
+                    {/* Lien LinkedIn */}
+                    <a 
+                        href="https://www.linkedin.com/in/clementchappot/"
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-gray-400 hover:text-yellow-500 transition-colors"
+                        aria-label="Profil LinkedIn"
+                    >
+                        {/* Assurez-vous d'avoir importé { Linkedin } en haut du fichier */}
+                        <Linkedin size={28} />
+                    </a>
+                    
+                    {/* Lien WhatsApp (wa.me/CodePaysNumero) */}
+                    <a 
+                        href="https://wa.me/41798102112"
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-gray-400 hover:text-yellow-500 transition-colors"
+                        aria-label="Contacter sur WhatsApp"
+                    >
+                        {/* Assurez-vous d'avoir importé { MessageSquare } en haut du fichier */}
+                        <MessageSquare size={28} /> 
+                    </a>
                 </div>
-            </section>
+            </div>
+        </div>
+        
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+            <a 
+                href="#contact"
+                className="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold hover:bg-yellow-400 transition flex items-center justify-center">
+                {t.hero.cta1}
+                <span className="ml-2">→</span>
+            </a>
+            <a 
+                href="#contact" 
+                className="bg-white text-slate-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition">
+                {t.hero.cta2}
+            </a>
+        </div>
+
+        {/* Stats/Credentials */}
+        <div className="flex flex-col md:flex-row gap-8 justify-center items-center text-gray-400">
+            <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
+                <TrendingUp className="text-yellow-500" size={24} />
+                <span>{t.hero.stat1}</span>
+            </div>
+            <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
+                <Target className="text-yellow-500" size={24} />
+                <span>{t.hero.stat2}</span>
+            </div>
+            <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
+                <BarChart3 className="text-yellow-500" size={24} />
+                <span>{t.hero.stat3}</span>
+            </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="mt-20">
+            <div className="inline-flex flex-col items-center">
+                <div className="w-6 h-10 border-2 border-yellow-500 rounded-full flex items-start justify-center p-2">
+                    <div className="w-1 h-3 bg-yellow-500 rounded-full animate-bounce"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
             
             {/* About Section */}
             <section id="about" className="py-20 px-6 bg-white text-slate-900">
