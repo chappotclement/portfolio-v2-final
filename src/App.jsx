@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaWhatsapp, FaEnvelope, FaLinkedinIn } from 'react-icons/fa';
 import { 
     TrendingUp, 
     Target, 
@@ -18,6 +18,7 @@ import {
     Palette, 
     LineChart, 
     MessageSquare,
+    MessageCircle,
     Phone,
     Activity, 
     Zap, 
@@ -42,7 +43,7 @@ const translations = {
             titleLine1: "I Scale Brands",
             titleLine2: "Profitably.",
             subtitle: "Performance marketing expertise. Bulletproof tracking infrastructure. Strict KPI discipline. Statistical decision-making to maximize results and profitability.",
-            cta1: "Book a Strategy Call",
+            cta1: "Book a Introduction Call", // MODIFIÉ
             cta2: "Request Performance Audit",
             stat1: "From Strategy to Activation",
             stat2: "Managed €15M+ in Ads",
@@ -50,10 +51,13 @@ const translations = {
         },
         about: {
             subtitle: "ABOUT CLÉMENT",
-            title: "Driving Digital Growth for 8+ Years: From Concept to Scale.",
+            // MODIFIÉ: Ajout gras/orange sur 'Concept to Scale.'
+            title: "Driving Digital Growth for 8+ Years: From <span class='text-yellow-600 font-bold'>Concept to Scale.</span>",
             p1: "Eight years mastering the full spectrum of digital growth, from specialized campaign execution to global ecosystem architecture. My expertise spans advanced performance marketing, robust tracking infrastructure, and seamless CRM lifecycle integration.",
-            p2: "My philosophy is simple: rigorous analysis meets hands-on execution. I build strategies designed for sustainable, profitable scale where every euro is tracked and every decision is data-backed.",
-            p3: "Proven track record scaling campaigns across Meta, Google, and Native platforms throughout Europe, consistently exceeding targets while maintaining strict cost efficiency.",
+            // MODIFIÉ: Ajout gras/orange sur 'rigorous analysis meets hands-on execution'
+            p2: "My philosophy is simple: <span class='text-yellow-600 font-bold'>rigorous analysis meets hands-on execution.</span> I build strategies designed for sustainable, profitable scale where every euro is tracked and every decision is data-backed.",
+            // MODIFIÉ: Ajout gras/orange sur 'Proven track record'
+            p3: "<span class='text-yellow-600 font-bold'>Proven track record</span> scaling campaigns across Meta, Google, and Native platforms throughout Europe, consistently exceeding targets while maintaining strict cost efficiency.",
             stat1Title: "+180%",
             stat1Desc: "YoY Revenue Growth",
             stat2Title: "€15M+",
@@ -192,7 +196,7 @@ const translations = {
                 client: "Amplify",
                 challengeTitle: "The Challenge",
                 challengeDesc: "The primary objective was to establish a foundation for scalable, data-driven acquisition by addressing key methodological and technical gaps in the existing media strategy.",
-                approachTitle: "My Approach",
+                approachTitle: "Mon Approche",
                 approachDesc: "Implemented a rapid performance stabilization methodology, focusing on structural clean-up and data integrity to quickly reduce wasted spend and unlock profitable acquisition scale.",
                 executedTitle: "What I Executed",
                 executedList: [
@@ -217,14 +221,26 @@ const translations = {
         },
         contact: {
             subtitle: "GET IN TOUCH",
-            title: "Ready to scale with data-driven performance?",
+            // MODIFIÉ: Nouveau titre avec surlignage "you scale?"
+            title: "Want to know exactly how I can help <span class='text-yellow-500 font-bold'>you Scale?</span>",
             description: "Let's discuss your growth challenges. Whether you need full campaign management or a one-time audit, I'm here to help you make better decisions with your marketing budget.",
             formName: "Your Name",
             formEmail: "Your Professional Email",
             formProject: "Tell me about your project and goals.",
             formButton: "Send Message",
             contactInfo: "Contact Information",
-            calendlyCta: "Schedule a Discovery Call (30 min)",
+            strategyCallsTitle: "Book your Introduction Call",
+            strategyCallsDescription: "Free 30-min consultation to discuss your needs",
+            whatsappTitle: "Direct Contact",
+            whatsappDescription: "Start a conversation on WhatsApp.", 
+            linkedinTitle: "View my profile",
+            linkedinDescription: "Connect for industry insights",
+            calendlyBadgeText: "Schedule a Discovery Call (30 min)",
+            emailTitle: "Direct Email Contact",
+            emailDescription: "Send a professional message via email.",
+            emailAddress: "chappotclement@gmail.com", 
+            unmaskedEmail: "chappotclement@gmail.com",
+            orSeparator: "OR" // AJOUTÉ
         },
         footer: {
             copyright: "2025 Clément. All rights reserved.",
@@ -247,7 +263,7 @@ const translations = {
             titleLine1: "Je fais Scaler les Marques.",
             titleLine2: "Avec Profit.",
             subtitle: "Expertise en marketing de performance. Tracking irréprochable. Contrôle strict des KPI. Prise de décision statistique pour maximiser les résultats et la rentabilité.",
-            cta1: "Réserver un Appel Stratégique",
+            cta1: "Réserver un Appel d'Introduction",
             cta2: "Demander un Audit de Performance",
             stat1: "De la stratégie à la mise en œuvre",
             stat2: "Plus de 15M€ de Budgets Publicitaires Gérés",
@@ -255,10 +271,13 @@ const translations = {
         },
         about: {
             subtitle: "À PROPOS DE CLÉMENT",
-            title: "Accélérateur de croissance digitale depuis 8+ ans : De la stratégie au scale.",
+            // MODIFIÉ: Ajout gras/orange sur 'De la stratégie au scale.'
+            title: "Accélérateur de Croissance Digitale depuis 8+ ans : <span class='text-yellow-600 font-bold'>De la Stratégie au Scale.</span>",
             p1: "Huit années à maîtriser l'ensemble du spectre de la croissance digitale, de l'exécution de campagnes spécialisées à l'architecture d'écosystèmes globaux. Mon expertise couvre le performance marketing management, une infrastructure de tracking solide et l'intégration CRM fluide.",
-            p2: "Ma philosophie est simple : analyse rigoureuse et exécution terrain. Je construis des stratégies pensées pour un scale durable et rentable, où chaque euro est tracké et chaque décision est data-driven.",
-            p3: "Track record prouvé en scaling de campagnes sur Meta, Google et les plateformes Native à travers l'Europe, dépassant constamment les objectifs tout en maintenant une efficacité budgétaire stricte.",
+            // MODIFIÉ: Ajout gras/orange sur 'analyse rigoureuse et exécution terrain'
+            p2: "Ma philosophie est simple : <span class='text-yellow-600 font-bold'>rigueur analytique et mise en œuvre opérationnelle.</span> Je construis des stratégies pensées pour un scale durable et rentable, où chaque euro est tracké et chaque décision est data-driven.",
+            // MODIFIÉ: Ajout gras/orange sur 'Track record prouvé'
+            p3: "<span class='text-yellow-600 font-bold'>Track record prouvé</span> en scaling de campagnes sur Meta, Google et les plateformes Native à travers l'Europe, dépassant constamment les objectifs tout en maintenant une efficacité budgétaire stricte.",
             stat1Title: "+180%",
             stat1Desc: "Croissance des Revenus Annuels",
             stat2Title: "15M€+",
@@ -329,7 +348,7 @@ const translations = {
                 title: "Sessions de Conseil en Croissance",
                 desc: "Sessions de conseil stratégique pour aligner vos efforts marketing avec vos objectifs business et identifier des quick wins.",
                 list: [
-                    "Sessions de stratégie",
+                    "Stratégie sessions",
                     "Audits de performance",
                     "Planification de la Roadmap",
                     "Formation d'équipe",
@@ -380,7 +399,7 @@ const translations = {
                     "Établissement de protocoles de reporting quotidiens et mensuels, y compris une analyse de cohorte détaillée pour l'évolution de la Valeur Vie Client (LTV).",
                     "Gestion de l'implémentation de tags et de micro-conversions de bout en bout",
                 ],
-                resultsTitle: "Résultats",
+                resultsTitle: "Results",
                 result1Metric: "ROAS",
                 result1Value: "5x",
                 result1Delta: "+30%",
@@ -407,7 +426,7 @@ const translations = {
                     "Fourniture de conseils et de formations d'équipe continus sur les tactiques d'achat média avancées.",
                 ],
                 resultsTitle: "Results",
-                result1Metric: "Réduction du CPL",
+                result1Metric: "CPL Reduction",
                 result1Value: "-10%",
                 result1Delta: "",
                 result2Metric: "Activations",
@@ -422,14 +441,26 @@ const translations = {
         },
         contact: {
             subtitle: "CONTACTEZ-MOI",
-            title: "Prêt à scaler avec une performance axée sur les données?",
-            description: "Discutons ensemble de vos défis en matière de croissance. Que vous ayez besoin d'une gestion complète de votre campagne ou d'un audit ponctuel, je suis là pour vous aider à prendre de meilleures décisions concernant votre budget marketing.",
+            // MODIFIÉ: Nouveau titre avec surlignage "t'aider à scale ?"
+            title: "Veux-tu savoir comment je peux <span class='text-yellow-500 font-bold'>t'aider à Scale ?</span>",
+            description: "Discutons ensemble de vos défis. Que vous ayez besoin d'une gestion complète de votre campagne ou d'un audit ponctuel, je suis là pour vous aider à prendre de meilleures décisions concernant votre budget marketing.",
             formName: "Votre Nom",
             formEmail: "Votre E-mail Professionnel",
             formProject: "Parlez-moi de votre projet et de vos objectifs.",
             formButton: "Envoyer le Message",
             contactInfo: "Coordonnées",
-            calendlyCta: "Planifier un Appel Découverte (30 min)",
+            strategyCallsTitle: "Réservez votre Appel d'Introduction",
+            strategyCallsDescription: "Consultation gratuite de 30 min pour discuter de vos besoins",
+            whatsappTitle: "Contact Direct",
+            whatsappDescription: "Démarrer une conversation sur WhatsApp.", // Texte corrigé et traduit
+            linkedinTitle: "Voir mon profil",
+            linkedinDescription: "Connectez-vous pour des insights de l'industrie",
+            calendlyBadgeText: "Planifier un Appel Découverte (30 min)",
+            emailTitle: "Contact Email Direct",
+            emailDescription: "Envoyer un message professionnel par e-mail.",
+            emailAddress: "chappotclement@gmail.com",
+            unmaskedEmail: "chappotclement@gmail.com",
+            orSeparator: "OU" // AJOUTÉ
         },
         footer: {
             copyright: "2025 Clément. Tous droits réservés.",
@@ -448,7 +479,7 @@ const LanguageContext = createContext();
 const LanguageProvider = ({ children }) => {
     // Initialize language from localStorage or default to 'fr' (since the user is French-speaking)
     const storedLang = typeof window !== 'undefined' ? localStorage.getItem('lang') : null;
-    const [language, setLanguage] = useState(storedLang || 'en');
+    const [language, setLanguage] = useState(storedLang || 'fr'); // Utiliser 'fr' par défaut
 
     useEffect(() => {
         // Save language to localStorage whenever it changes
@@ -472,7 +503,6 @@ const LanguageProvider = ({ children }) => {
 
 // Custom hook for easier use
 const useLanguage = () => useContext(LanguageContext);
-
 // --- 3. LANGUAGE SWITCHER COMPONENT ---
 const LanguageSwitcher = () => {
     const { language, toggleLanguage } = useLanguage();
@@ -495,7 +525,8 @@ const LanguageSwitcher = () => {
 // --- Helper component for Services List ---
 const ServiceItem = ({ icon: Icon, title, description, list }) => {
     const { t } = useLanguage();
-    const arrow = t.services.service1.list[0].includes("→") ? "→" : "▸"; // Use original list style or derived one
+    // Assuming the user might want a specific arrow character
+    const arrow = t.services.service1.list[0].includes("→") ? "→" : "▸"; 
 
     return (
         <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-yellow-400 hover:shadow-xl transition-all duration-300 cursor-pointer group">
@@ -524,7 +555,8 @@ const ServiceItem = ({ icon: Icon, title, description, list }) => {
 
 // --- Helper component for Case Study Result Box ---
 const ResultBox = ({ metric, value, delta }) => {
-    const color = delta && delta.trim().startsWith('-') ? 'text-red-600' : 'text-green-600';
+    const color = delta && delta.trim().startsWith('-') ?
+    'text-red-600' : 'text-green-600';
     return (
         <div className="bg-gray-50 p-4 rounded-xl">
             <div className="text-xs text-gray-500 mb-1">{metric}</div>
@@ -624,11 +656,100 @@ const CaseStudyCard = ({ caseData, tagBg, tagText, bgColor }) => {
     );
 };
 
+// --- 5. COMPONENT SPÉCIFIQUE POUR GÉRER CALENDLY EN REACT ---
+const CalendlyWidget = () => {
+    const calendlyRef = React.useRef(null);
+    // URL et couleur hardcodées comme demandé
+    const calendlyUrl = 'https://calendly.com/chappotclement/30min'; 
+    const primaryColor = 'fdc700';
+
+    useEffect(() => {
+        const targetElement = calendlyRef.current;
+        if (!targetElement) return;
+
+        // Fonction pour initialiser le widget, s'assurant qu'il ne se déclenche qu'une seule fois
+        const initWidget = () => {
+            // Vérifie que l'API est disponible ET que le conteneur est vide (pas de double initialisation)
+            if (window.Calendly && targetElement.children.length === 0) {
+                console.log('Initializing Calendly widget...');
+                window.Calendly.initInlineWidget({
+                    url: calendlyUrl, // URL hardcodée
+                    parentElement: targetElement,
+                    // Paramètres hardcodés
+                    pageSettings: {
+                        backgroundColor: 'ffffff',
+                        hideEventTypeDetails: false,
+                        hideLandingPageDetails: false,
+                        primaryColor: primaryColor,
+                        textColor: '1d2939'
+                    },
+                });
+            }
+        };
+
+        // Si l'objet Calendly est déjà prêt (ex: après un chargement rapide), on initialise
+        if (window.Calendly) {
+            initWidget();
+            return;
+        }
+
+        // On charge le script si ce n'est pas déjà fait
+        const scriptId = 'calendly-widget-script';
+        let script = document.getElementById(scriptId);
+        let interval = null;
+
+        if (!script) {
+            script = document.createElement('script');
+            script.src = 'https://assets.calendly.com/assets/external/widget.js';
+            script.type = 'text/javascript';
+            script.async = true;
+            script.id = scriptId;
+            document.head.appendChild(script);
+            
+            // Initialise le widget une fois que le script est chargé
+            script.onload = () => {
+                // Petit délai pour assurer que le script est bien interprété
+                setTimeout(initWidget, 50); 
+            };
+        } else if (script && !window.Calendly) {
+            // Si le script est déjà là mais que l'API n'est pas encore prête, on attend.
+             interval = setInterval(() => {
+                if (window.Calendly) {
+                    clearInterval(interval);
+                    initWidget();
+                }
+            }, 100);
+        }
+
+        // Nettoyage : retire l'iframe du conteneur si le composant est démonté
+        return () => {
+            if (targetElement) {
+                targetElement.innerHTML = '';
+            }
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
+
+    }, []); // Runs once on mount
+
+    return (
+        // Le conteneur React qui sera ciblé
+        <div 
+            ref={calendlyRef} 
+            style={{ minWidth: '320px', height: '700px' }} 
+            className="bg-slate-800 p-2 md:p-8 rounded-xl shadow-2xl overflow-hidden" 
+        >
+            {/* L'iframe Calendly sera injecté ici par le script */}
+        </div>
+    );
+};
+
 
 // --- 4. MAIN APP COMPONENT ---
 function AppContent() {
     const { t } = useLanguage();
-    
+
     // Helper function for About section stats desc (handles newline in translation file)
     const renderStatDescription = (desc) => {
         return desc.split('\n').map((line, index) => (
@@ -656,139 +777,168 @@ function AppContent() {
                 </nav>
             </header>
 
-{/* Hero Section */}
-<section className="pt-32 pb-20 px-6">
-    <div className="container mx-auto text-center">
-        
-        {/* Badge */}
-        <div className="inline-block mb-8">
-            <span className="border border-yellow-600 text-yellow-500 px-6 py-2 rounded-full text-sm font-medium">
-                {t.hero.badge}
-            </span>
-        </div>
-
-        {/* Main Title */}
-        <h1 className="text-6xl md:text-7xl font-bold text-white mb-4">
-            {t.hero.titleLine1}
-        </h1>
-        <h1 className="text-6xl md:text-7xl font-bold text-yellow-500 mb-8">
-            {t.hero.titleLine2}
-        </h1>
-
-        {/* Subtitle Area with Profile Picture & Socials */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto mb-12">
-            
-            {/* Photo de profil */}
-            <div className="shrink-0 relative">
-                <img 
-                    src="https://i.ibb.co/fbC4qVF/clement-photo-de-profil.png" 
-                    alt="Profile" 
-                    className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-yellow-500 object-cover shadow-lg"
+            {/* Hero Section */}
+            <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+                
+                {/* EFFET : Background Subtil (Spotlight + Dots) - VISIBILITÉ ACCRUE */}
+                <div
+                    className="absolute inset-0 z-0"
+                    aria-hidden="true"
+                    style={{
+                        // 1. Dégradé radial PLUS VISIBLE utilisant le jaune (Spotlight)
+                        background: 'radial-gradient(circle at center, rgba(250, 204, 21, 0.1) 0%, rgba(15, 23, 42, 0.8) 70%)', 
+                        // 2. Motif de points (Dots) : Couleur jaune (facc15) avec une opacité visible (#facc1560)
+                        backgroundImage: `radial-gradient(circle, #facc1560 1px, transparent 1px)`, 
+                        backgroundSize: '80px 80px',
+                        opacity: 1, 
+                    }}
                 />
-            </div>
-
-            {/* Liens Sociaux et Texte */}
-            <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xl">
                 
-                {/* LIENS SOCIAUX (AVANT LA DESCRIPTION) */}
-                <div className="flex space-x-4 mb-4">
-                    {/* Lien LinkedIn */}
-                    <a 
-                        href="https://www.linkedin.com/in/clementchappot/"
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-yellow-500 transition-colors"
-                        aria-label="Profil LinkedIn"
-                    >
-                        <Linkedin size={28} />
-                    </a>
+                {/* Content Container (z-10 pour être au-dessus des effets) */}
+                <div className="container mx-auto text-center relative z-10">
                     
-                    {/* Lien WhatsApp (AVEC L'ICÔNE PHONE POUR DÉPANNAGE) */}
-<a 
-    href="https://wa.me/41798102112"
-    target="_blank" 
-    rel="noopener noreferrer"
-    className="text-gray-400 hover:text-yellow-500 transition-colors"
-    aria-label="Contacter sur WhatsApp"
->
-    {/* Utilisez FaWhatsapp ici après l'avoir importée */}
-    <FaWhatsapp size={28} /> 
-</a>
-                </div>
-                
-                {/* Texte de la description (APRES LES LIENS) */}
-                <p className="text-gray-400 text-lg md:text-xl">
-                    {t.hero.subtitle}
-                </p>
-            </div>
-        </div>
-        
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
-            <a 
-                href="#contact"
-                className="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold hover:bg-yellow-400 transition flex items-center justify-center">
-                {t.hero.cta1}
-                <span className="ml-2">→</span>
-            </a>
-            <a 
-                href="#contact" 
-                className="bg-white text-slate-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition">
-                {t.hero.cta2}
-            </a>
-        </div>
+                    {/* Badge */}
+                    <div className="inline-block mb-8">
+                        <span className="border border-yellow-600 text-yellow-500 px-6 py-2 rounded-full text-sm font-medium">
+                            {t.hero.badge}
+                        </span>
+                    </div>
 
-        {/* Stats/Credentials */}
-        <div className="flex flex-col md:flex-row gap-8 justify-center items-center text-gray-400">
-            <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
-                <TrendingUp className="text-yellow-500" size={24} />
-                <span>{t.hero.stat1}</span>
-            </div>
-            <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
-                <Target className="text-yellow-500" size={24} />
-                <span>{t.hero.stat2}</span>
-            </div>
-            <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
-                <BarChart3 className="text-yellow-500" size={24} />
-                <span>{t.hero.stat3}</span>
-            </div>
-        </div>
+                    {/* Main Title */}
+                    <h1 className="text-6xl md:text-7xl font-bold text-white mb-4">
+                        {t.hero.titleLine1}
+                    </h1>
+                    <h1 className="text-6xl md:text-7xl font-bold text-yellow-500 mb-8">
+                        {t.hero.titleLine2}
+                    </h1>
 
-        {/* Scroll Indicator */}
-        <div className="mt-20">
-            <div className="inline-flex flex-col items-center">
-                <div className="w-6 h-10 border-2 border-yellow-500 rounded-full flex items-start justify-center p-2">
-                    <div className="w-1 h-3 bg-yellow-500 rounded-full animate-bounce"></div>
+                    {/* Subtitle Area with Profile Picture & Socials */}
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto mb-12">
+                        
+                        {/* Photo de profil */}
+                        <div className="shrink-0 relative">
+                            <img 
+                                src="https://i.ibb.co/fbC4qVF/clement-photo-de-profil.png" 
+                                alt="Profile" 
+                                className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-yellow-500 object-cover shadow-lg"
+                            />
+                        </div>
+
+                        {/* Texte et Liens Sociaux (structure modifiée) */}
+                        <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xl">
+                            
+                            {/* Texte de la description (AVANT LES LIENS) */}
+                            <p className="text-gray-400 text-lg md:text-xl mb-6">
+                                {t.hero.subtitle}
+                            </p>
+                            
+                            {/* LIENS SOCIAUX (APRES LA DESCRIPTION) - Uniquement LinkedIn */}
+                            <div className="flex space-x-4">
+                                
+                                {/* Lien LinkedIn (Bleu Officiel) */}
+                                <a 
+                                    href="https://www.linkedin.com/in/clementchappot/"
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-[#0A66C2] hover:opacity-80 transition-opacity"
+                                    aria-label="Profil LinkedIn"
+                                >
+                                    <FaLinkedinIn size={32} /> 
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* CTA Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+                        <a 
+                            href="#contact"
+                            className="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold hover:bg-yellow-400 transition flex items-center justify-center"
+                        >
+                            {t.hero.cta1}
+                            <span className="ml-2">→</span>
+                        </a>
+                        <a 
+                            href="#contact" 
+                            className="bg-white text-slate-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition"
+                        >
+                            {t.hero.cta2}
+                        </a>
+                    </div>
+
+                    {/* Stats/Credentials */}
+                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center text-gray-400">
+                        <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
+                            <TrendingUp className="text-yellow-500" size={24} />
+                            <span>{t.hero.stat1}</span>
+                        </div>
+                        <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
+                            <Target className="text-yellow-500" size={24} />
+                            <span>{t.hero.stat2}</span>
+                        </div>
+                        <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-lg">
+                            <BarChart3 className="text-yellow-500" size={24} />
+                            <span>{t.hero.stat3}</span>
+                        </div>
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <div className="mt-20">
+                        <div className="inline-flex flex-col items-center">
+                            <div className="w-6 h-10 border-2 border-yellow-500 rounded-full flex items-start justify-center p-2">
+                                <div className="w-1 h-3 bg-yellow-500 rounded-full animate-bounce"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
             
             {/* About Section */}
             <section id="about" className="py-20 px-6 bg-white text-slate-900">
                 <div className="container mx-auto max-w-7xl">
                     <div className="grid md:grid-cols-2 gap-16 items-center">
                         
-                        {/* Left Column: Text */}
+                        {/* Left Column: Text & New Contact Box */}
                         <div>
                             <span className="text-yellow-600 uppercase tracking-widest text-sm font-semibold mb-3 block">
                                 {t.about.subtitle}
                             </span>
-                            <h2 className="text-5xl font-extrabold mb-8 leading-tight">
-                                {t.about.title}
-                            </h2>
+                            {/* Utilisation de dangerouslySetInnerHTML pour les passages en gras/orange */}
+                            <h2 
+                                className="text-5xl font-extrabold mb-8 leading-tight"
+                                dangerouslySetInnerHTML={{ __html: t.about.title }}
+                            />
                             
                             <p className="text-gray-600 mb-6 leading-relaxed">
                                 {t.about.p1}
                             </p>
+                            {/* Utilisation de dangerouslySetInnerHTML pour les passages en gras/orange */}
                             <p
                                 className="text-gray-600 mb-8 leading-relaxed"
                                 dangerouslySetInnerHTML={{ __html: t.about.p2 }}
                             />
-                            <p className="text-gray-600 mb-8 leading-relaxed">
-                                {t.about.p3}
-                            </p>
+                            {/* Utilisation de dangerouslySetInnerHTML pour les passages en gras/orange */}
+                            <p 
+                                className="text-gray-600 mb-8 leading-relaxed"
+                                dangerouslySetInnerHTML={{ __html: t.about.p3 }}
+                            />
+
+                            {/* NOUVEL ENCART : Lien LinkedIn simple, sous le dernier paragraphe */}
+                            <div className="mt-8">
+                                <a 
+                                    href="https://www.linkedin.com/in/clementchappot/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center space-x-2 text-slate-700 hover:text-slate-900 transition"
+                                    aria-label="Connecter sur LinkedIn"
+                                >
+                                    {/* Icone LinkedIn en bleu officiel, taille alignée sur le texte (small) */}
+                                    <FaLinkedinIn size={20} className="text-[#0A66C2]"/> 
+                                    <span className="font-medium text-base">
+                                        {t.contact.linkedinTitle} 
+                                    </span> 
+                                </a>
+                            </div>
                         </div>
 
                         {/* Right Column: Stats Grid 2x2 */}
@@ -907,7 +1057,7 @@ function AppContent() {
             {/* Case Studies Section */}
             <section id="case-studies" className="py-20 px-6 bg-white text-slate-900">
                 <div className="container mx-auto max-w-7xl">
-                    
+            
                     {/* Header */}
                     <div className="text-center mb-16">
                         <span className="text-yellow-600 uppercase tracking-widest text-sm font-semibold mb-3 block">
@@ -952,129 +1102,181 @@ function AppContent() {
                 </div>
             </section>
             
-            {/* Contact Section */}
+{/* Contact Section - FINAL TWO-COLUMN WITH INLINE CALENDLY */}
             <section id="contact" className="py-20 px-6 bg-slate-900 text-white">
-                <div className="container mx-auto max-w-7xl">
+                <div className="container mx-auto max-w-7xl"> 
                     <div className="grid md:grid-cols-2 gap-12">
                         
                         {/* Left: Text & Contact Info */}
-                        <div>
+                        {/* Alignement par défaut à gauche (justifié par l'absence de text-center sur le parent) */}
+                        <div> 
                             <span className="text-yellow-600 uppercase tracking-widest text-sm font-semibold mb-3 block">
                                 {t.contact.subtitle}
                             </span>
-                            <h2 className="text-5xl font-extrabold mb-6">
-                                {t.contact.title}
-                            </h2>
+                            {/* Utilisation de dangerouslySetInnerHTML pour les passages en gras/orange */}
+                            <h2 
+                                className="text-5xl font-extrabold mb-6"
+                                dangerouslySetInnerHTML={{ __html: t.contact.title }}
+                            />
                             <p className="text-gray-400 text-lg mb-10">
                                 {t.contact.description}
                             </p>
-                            <ul className="space-y-3 text-gray-400">
-                                <li className="mt-8">
+                            
+                            {/* --- STRUCTURE DES POINTS DE CONTACT (Introduction Call, WhatsApp, Email) --- */}
+                            <div className="space-y-3"> {/* Réduction de l'espacement entre les blocs */}
+                                
+                                {/* 1. Introduction Call (Calendly) - Padding réduit, titre réduit */}
+                                <a
+                                    href="https://calendly.com/chappotclement/30min" // Lien direct vers Calendly
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    // Padding réduit
+                                    className="flex items-center justify-start gap-4 p-3 rounded transition cursor-pointer group border border-slate-700 hover:bg-slate-800"
+                                > 
+                                    <Calendar size={28} className="text-yellow-500 flex-shrink-0 group-hover:scale-105 transition"/>
+                                    <div>
+                                        {/* Titre réduit */}
+                                        <p className="text-base font-bold text-white mb-1">
+                                            {t.contact.strategyCallsTitle} 
+                                        </p>
+                                        <p className="text-gray-400 text-sm">
+                                            {t.contact.strategyCallsDescription}
+                                        </p>
+                                    </div>
+                                </a>
+
+                                {/* OR Separator - CENTRÉ & DYNAMISÉ */}
+                                <div className="flex justify-center py-4"> 
+                                    <span className="text-gray-500 font-bold uppercase tracking-widest text-sm">
+                                        {t.contact.orSeparator} {/* UTILISATION DYNAMIQUE */}
+                                    </span>
+                                </div>
+
+                                {/* NOUVEAU CONTENEUR pour WhatsApp et Email sur 50/50 */}
+                                <div className="flex flex-col md:flex-row gap-4"> 
+
+                                    {/* 2. Direct Contact (WhatsApp) - 50% - flex-1 ajouté */}
                                     <a 
-                                        href="#" 
+                                        href="https://wa.me/41798102112?text=Bonjour%20Clement" 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="bg-yellow-500 text-black px-6 py-3 rounded-full font-semibold inline-flex items-center gap-2 hover:bg-yellow-400 transition"
+                                        // Ajout de flex-1 pour 50% de largeur sur MD+
+                                        className="flex-1 flex items-center justify-start gap-4 p-3 rounded transition cursor-pointer group border border-slate-700 hover:bg-slate-800"
                                     >
-                                        <Calendar size={20}/>
-                                        {t.contact.calendlyCta}
+                                        <FaWhatsapp size={28} className="text-[#25D366] flex-shrink-0 group-hover:opacity-80 transition group-hover:scale-105"/>
+                                        <div>
+                                            {/* Titre réduit */}
+                                            <p className="text-base font-bold text-white mb-1">
+                                                {t.contact.whatsappTitle}
+                                            </p>
+                                            <p className="text-gray-400 text-sm">
+                                                {t.contact.whatsappDescription}
+                                            </p>
+                                        </div>
                                     </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Right: Contact Form (Static Placeholder) */}
-                        <div className="bg-slate-800 p-8 rounded-xl shadow-2xl">
-                            <form className="space-y-6">
-                                <div>
-                                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">{t.contact.formName}</label>
-                                    <input 
-                                        type="text" 
-                                        id="name" 
-                                        className="w-full p-3 rounded-lg bg-slate-700 border border-slate-700 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 text-white" 
-                                        placeholder={t.contact.formName}
-                                    />
+                                    
+                                    {/* 3. Direct Email - 50% - flex-1 ajouté */}
+                                    <a 
+                                        href={`mailto:${t.contact.unmaskedEmail}`} // Lien mailto fonctionnel
+                                        // Ajout de flex-1 pour 50% de largeur sur MD+
+                                        className="flex-1 flex items-center justify-start gap-4 p-3 rounded transition cursor-pointer group border border-slate-700 hover:bg-slate-800"
+                                    >
+                                        <Mail size={28} className="text-gray-400 flex-shrink-0 group-hover:text-yellow-500 transition group-hover:scale-105"/>
+                                        <div>
+                                            {/* Titre réduit */}
+                                            <p className="text-base font-bold text-white mb-1">
+                                                {t.contact.emailTitle}
+                                            </p>
+                                            <p className="text-gray-400 text-sm">
+                                                {t.contact.emailAddress} {/* Affichage de l'email obfuscé */}
+                                            </p>
+                                        </div>
+                                    </a>
                                 </div>
-                                <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">{t.contact.formEmail}</label>
-                                    <input 
-                                        type="email" 
-                                        id="email" 
-                                        className="w-full p-3 rounded-lg bg-slate-700 border border-slate-700 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 text-white" 
-                                        placeholder={t.contact.formEmail}
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="project" className="block text-sm font-medium text-gray-300 mb-2">{t.contact.formProject}</label>
-                                    <textarea 
-                                        id="project" 
-                                        rows="4" 
-                                        className="w-full p-3 rounded-lg bg-slate-700 border border-slate-700 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 text-white" 
-                                        placeholder={t.contact.formProject}
-                                    ></textarea>
-                                </div>
+                            </div>
+                            
+                            {/* --- FORMULAIRE (Non implémenté dans ce code, donc laissé comme marqueur si besoin) --- */}
+                            {/* <form className="mt-12 space-y-6">
+                                <input 
+                                    type="text" 
+                                    placeholder={t.contact.formName} 
+                                    className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:ring-yellow-500 focus:border-yellow-500"
+                                />
+                                <input 
+                                    type="email" 
+                                    placeholder={t.contact.formEmail} 
+                                    className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:ring-yellow-500 focus:border-yellow-500"
+                                />
+                                <textarea 
+                                    placeholder={t.contact.formProject} 
+                                    rows="5"
+                                    className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:ring-yellow-500 focus:border-yellow-500"
+                                ></textarea>
                                 <button 
                                     type="submit" 
-                                    className="w-full bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition"
+                                    className="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold hover:bg-yellow-400 transition w-full"
                                 >
                                     {t.contact.formButton}
                                 </button>
-                            </form>
+                            </form> 
+                            */}
                         </div>
+
+                        {/* Right: Calendly Widget (Fixed Height) */}
+                        <div className="md:sticky md:top-28 self-start">
+                            <CalendlyWidget />
+                        </div>
+
                     </div>
                 </div>
             </section>
 
 
-{/* Footer */}
-<footer className="bg-slate-900 border-t border-slate-800 py-8 px-6 text-gray-400">
-    <div className="container mx-auto flex flex-col md:flex-row items-center justify-between text-sm">
-        <div className="mb-4 md:mb-0">
-            {t.footer.copyright}
-        </div>
-        
-        {/* Liens de navigation et sociaux groupés */}
-        <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-            
-            {/* Liens de navigation */}
-            <div className="flex space-x-6">
-                <a href="#about" className="hover:text-white transition">{t.footer.nav.about}</a>
-                <a href="#services" className="hover:text-white transition">{t.footer.nav.services}</a>
-                <a href="#case-studies" className="hover:text-white transition">{t.footer.nav.caseStudies}</a>
-            </div>
+            {/* Footer */}
+            <footer className="bg-slate-900 border-t border-slate-800 text-gray-400 py-10 px-6">
+                <div className="container mx-auto max-w-7xl">
+                    <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+                        
+                        {/* Copyright */}
+                        <p className="text-sm">
+                            {t.footer.copyright}
+                        </p>
 
-            {/* Séparateur visuel optionnel (pour les écrans larges) */}
-            <span className="hidden md:block text-slate-700">|</span>
-
-            {/* NOUVEAUX LIENS SOCIAUX */}
-            <div className="flex space-x-4">
-                {/* Lien LinkedIn */}
-                <a 
-                    href="https://www.linkedin.com/in/clementchappot/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="hover:text-yellow-500 transition-colors"
-                    aria-label="Profil LinkedIn"
-                >
-                    {/* Assurez-vous d'avoir importé { Linkedin } de lucide-react */}
-                    <Linkedin size={20} />
-                </a>
-                
-                {/* Lien WhatsApp */}
-                <a 
-                    href="https://wa.me/41798102112" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="hover:text-yellow-500 transition-colors"
-                    aria-label="Contacter sur WhatsApp"
-                >
-                    {/* Assurez-vous d'avoir importé { FaWhatsapp } de react-icons/fa */}
-                    <FaWhatsapp size={20} />
-                </a>
-            </div>
-        </div>
-    </div>
-</footer>
+                        {/* Navigation Links */}
+                        <div className="flex space-x-6 text-sm">
+                            <a href="#about" className="hover:text-yellow-500 transition">{t.footer.nav.about}</a>
+                            <a href="#services" className="hover:text-yellow-500 transition">{t.footer.nav.services}</a>
+                            <a href="#case-studies" className="hover:text-yellow-500 transition">{t.footer.nav.caseStudies}</a>
+                        </div>
+                        
+                        {/* NOUVEAUX LIENS SOCIAUX */}
+                        <div className="flex space-x-4">
+                            
+                            {/* Lien LinkedIn */}
+                            <a 
+                                href="https://www.linkedin.com/in/clementchappot/" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-yellow-500 transition-colors" 
+                                aria-label="Profil LinkedIn"
+                            >
+                                <FaLinkedinIn size={20} />
+                            </a>
+                            
+                            {/* Lien WhatsApp */}
+                            <a 
+                                href="https://wa.me/41798102112" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-yellow-500 transition-colors" 
+                                aria-label="Contacter sur WhatsApp"
+                            >
+                                <FaWhatsapp size={20} />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }
