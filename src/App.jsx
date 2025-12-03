@@ -35,24 +35,24 @@ const translations = {
         header: {
             about: "About",
             services: "Services",
-            caseStudies: "Case Studies",
-            contactButton: "Get in Touch",
+            caseStudies: "Case studies",
+            contactButton: "Get in touch",
         },
         hero: {
             badge: "Performance Marketing Expert",
-            titleLine1: "I Scale Brands",
+            titleLine1: "I scale brands.",
             titleLine2: "Profitably.",
             subtitle: "Performance marketing expertise. Bulletproof tracking infrastructure. Strict KPI discipline. Statistical decision-making to maximize results and profitability.",
-            cta1: "Book a Introduction Call", // MODIFIÉ
-            cta2: "Request Performance Audit",
-            stat1: "From Strategy to Activation",
+            cta1: "Book an introduction call", // MODIFIÉ
+            cta2: "Request performance audit",
+            stat1: "From strategy to activation",
             stat2: "Managed €15M+ in Ads",
-            stat3: "Scaled Brands Across Europe",
+            stat3: "Scaled brands across Europe",
         },
         about: {
             subtitle: "ABOUT CLÉMENT",
             // MODIFIÉ: Ajout gras/orange sur 'Concept to Scale.'
-            title: "Driving Digital Growth for 8+ Years: From <span class='text-yellow-600 font-bold'>Concept to Scale.</span>",
+            title: "Driving digital growth for 8+ years: From <span class='text-yellow-600 font-bold'>concept to scale.</span>",
             p1: "Eight years mastering the full spectrum of digital growth, from specialized campaign execution to global ecosystem architecture. My expertise spans advanced performance marketing, robust tracking infrastructure, and seamless CRM lifecycle integration.",
             // MODIFIÉ: Ajout gras/orange sur 'rigorous analysis meets hands-on execution'
             p2: "My philosophy is simple: <span class='text-yellow-600 font-bold'>rigorous analysis meets hands-on execution.</span> I build strategies designed for sustainable, profitable scale where every euro is tracked and every decision is data-backed.",
@@ -69,7 +69,7 @@ const translations = {
         },
         services: {
             subtitle: "SERVICES",
-            title: "Delivered Personally, Every Time",
+            title: "Delivered personally, every time",
             description: "I ensure direct, hands-on involvement from the initial strategy session to final optimization.",
             service1: {
                 title: "Performance Marketing Management",
@@ -138,7 +138,7 @@ const translations = {
         },
         caseStudies: {
             subtitle: "CASE STUDIES",
-            title: "Real Results, Real Impact",
+            title: "Real results, real impact",
             description: "A selection of projects where my hands-on approach delivered measurable business outcomes.",
             case1: {
                 tag: "Luxury Watchmaking",
@@ -147,7 +147,7 @@ const translations = {
                 challengeDesc: "Scale paid and organic acquisition profitably while entering new European markets with a premium price point product.",
                 approachTitle: "My Approach",
                 approachDesc: "Drove scalable and profitable acquisition by leveraging a robust optimization methodology, implementing rigorous creative testing, and developing high-converting funnels.",
-                executedTitle: "What I Executed",
+                executedTitle: "What I executed",
                 executedList: [
                     "Deployed custom tracking solutions to ensure data accuracy for optimized campaign performance.",
                     "Managed €1,3M+ annual ad spend across Meta, Google, Outbrain and Taboola",
@@ -158,7 +158,7 @@ const translations = {
                 result1Metric: "ROAS",
                 result1Value: "4.8x",
                 result1Delta: "+128%",
-                result2Metric: "Leads Generation",
+                result2Metric: "Leads generation",
                 result2Value: "450k",
                 result3Metric: "CPA",
                 result3Value: "€350",
@@ -172,7 +172,7 @@ const translations = {
                 challengeDesc: "To scale a high-growth D2C business in the competitive senior health supplement market from €1M to €50M+ in revenue within 3 years, while maintaining hyper-profitable acquisition metrics",
                 approachTitle: "My Approach",
                 approachDesc: "Leveraged robust server-side data and high-converting lead generation/nurturing funnels to achieve scale and profitability significantly beyond initial targets.",
-                executedTitle: "What I Executed",
+                executedTitle: "What I executed",
                 executedList: [
                     "Managed and deployed full-funnel media campaigns across Google, Facebook, Criteo and Native Ad platforms for acquisition.",
                     "Oversaw and implemented email automation workflows",
@@ -183,7 +183,7 @@ const translations = {
                 result1Metric: "ROAS",
                 result1Value: "5x",
                 result1Delta: "+30%",
-                result2Metric: "Turn Over",
+                result2Metric: "Turn over",
                 result2Value: "+5000%",
                 result2Delta: "over 3 years",
                 result3Metric: "CPL",
@@ -198,7 +198,7 @@ const translations = {
                 challengeDesc: "The primary objective was to establish a foundation for scalable, data-driven acquisition by addressing key methodological and technical gaps in the existing media strategy.",
                 approachTitle: "Mon Approche",
                 approachDesc: "Implemented a rapid performance stabilization methodology, focusing on structural clean-up and data integrity to quickly reduce wasted spend and unlock profitable acquisition scale.",
-                executedTitle: "What I Executed",
+                executedTitle: "What I executed",
                 executedList: [
                     "Structural optimization of campaign accounts to reduce friction and improve clarity.",
                     "Restructured ad groups and targeting strategies for better budget allocation efficiency.",
@@ -222,25 +222,25 @@ const translations = {
         contact: {
             subtitle: "GET IN TOUCH",
             // MODIFIÉ: Nouveau titre avec surlignage "you scale?"
-            title: "Want to know exactly how I can help <span class='text-yellow-500 font-bold'>you Scale?</span>",
+            title: "Want to know exactly how I can help <span class='text-yellow-500 font-bold'>you scale?</span>",
             description: "Let's discuss your growth challenges. Whether you need full campaign management or a one-time audit, I'm here to help you make better decisions with your marketing budget.",
             formName: "Your Name",
             formEmail: "Your Professional Email",
             formProject: "Tell me about your project and goals.",
             formButton: "Send Message",
             contactInfo: "Contact Information",
-            strategyCallsTitle: "Book your Introduction Call",
+            strategyCallsTitle: "Book your introduction call",
             strategyCallsDescription: "Free 30-min consultation to discuss your needs",
-            whatsappTitle: "Direct Contact",
+            whatsappTitle: "Direct contact",
             whatsappDescription: "Start a conversation on WhatsApp.", 
             linkedinTitle: "View my profile",
             linkedinDescription: "Connect for industry insights",
             calendlyBadgeText: "Schedule a Discovery Call (30 min)",
-            emailTitle: "Direct Email Contact",
+            emailTitle: "Direct email contact",
             emailDescription: "Send a professional message via email.",
             emailAddress: "chappotclement@gmail.com", 
             unmaskedEmail: "chappotclement@gmail.com",
-            orSeparator: "OR" // AJOUTÉ
+            orSeparator: "OR"
         },
         footer: {
             copyright: "2025 Clément. All rights reserved.",
@@ -253,35 +253,35 @@ const translations = {
     },
     fr: {
         header: {
-            about: "À Propos",
+            about: "À propos",
             services: "Services",
-            caseStudies: "Études de Cas",
-            contactButton: "Me Contacter",
+            caseStudies: "Études de cas",
+            contactButton: "Me contacter",
         },
         hero: {
             badge: "Expert en Marketing de Performance",
-            titleLine1: "Je fais Scaler les Marques.",
-            titleLine2: "Avec Profit.",
+            titleLine1: "Je fais scaler les marques.",
+            titleLine2: "Avec profit.",
             subtitle: "Expertise en marketing de performance. Tracking irréprochable. Contrôle strict des KPI. Prise de décision statistique pour maximiser les résultats et la rentabilité.",
-            cta1: "Réserver un Appel d'Introduction",
-            cta2: "Demander un Audit de Performance",
+            cta1: "Réserver un appel d'introduction",
+            cta2: "Demander un audit de performance",
             stat1: "De la stratégie à la mise en œuvre",
-            stat2: "Plus de 15M€ de Budgets Publicitaires Gérés",
+            stat2: "Plus de 15M€ de budgets publicitaires gérés",
             stat3: "Expansion de Marques en Europe",
         },
         about: {
             subtitle: "À PROPOS DE CLÉMENT",
             // MODIFIÉ: Ajout gras/orange sur 'De la stratégie au scale.'
-            title: "Accélérateur de Croissance Digitale depuis 8+ ans : <span class='text-yellow-600 font-bold'>De la Stratégie au Scale.</span>",
+            title: "Accélérateur de croissance digitale depuis 8+ ans : <span class='text-yellow-600 font-bold'>De la stratégie au scale.</span>",
             p1: "Huit années à maîtriser l'ensemble du spectre de la croissance digitale, de l'exécution de campagnes spécialisées à l'architecture d'écosystèmes globaux. Mon expertise couvre le performance marketing management, une infrastructure de tracking solide et l'intégration CRM fluide.",
             // MODIFIÉ: Ajout gras/orange sur 'analyse rigoureuse et exécution terrain'
             p2: "Ma philosophie est simple : <span class='text-yellow-600 font-bold'>rigueur analytique et mise en œuvre opérationnelle.</span> Je construis des stratégies pensées pour un scale durable et rentable, où chaque euro est tracké et chaque décision est data-driven.",
             // MODIFIÉ: Ajout gras/orange sur 'Track record prouvé'
             p3: "<span class='text-yellow-600 font-bold'>Track record prouvé</span> en scaling de campagnes sur Meta, Google et les plateformes Native à travers l'Europe, dépassant constamment les objectifs tout en maintenant une efficacité budgétaire stricte.",
             stat1Title: "+180%",
-            stat1Desc: "Croissance des Revenus Annuels",
+            stat1Desc: "Croissance des revenus annuels",
             stat2Title: "15M€+",
-            stat2Desc: "Dépenses Publicitaires Gérées\nsur toutes les plateformes",
+            stat2Desc: "Dépenses publicitaires gérées\nsur toutes les plateformes",
             stat3Title: "-42%",
             stat3Desc: "Réduction du CPA\nmoy. d'amélioration",
             stat4Title: "+65%",
@@ -289,7 +289,7 @@ const translations = {
         },
         services: {
             subtitle: "SERVICES",
-            title: "Une Livraison Personnalisée, à Chaque Fois",
+            title: "Une livraison personnalisée, à chaque fois",
             description: "Je m'implique directement et concrètement, dès la première session stratégique et jusqu'à la phase d'optimisation finale.",
             service1: {
                 title: "Performance Marketing Management",
@@ -358,7 +358,7 @@ const translations = {
         },
         caseStudies: {
             subtitle: "ÉTUDES DE CAS",
-            title: "Résultats Réels, Impact Réel",
+            title: "Résultats réels, impact réel",
             description: "Une sélection de projets où mon approche pratique a généré des résultats commerciaux mesurables.",
             case1: {
                 tag: "Horlogerie de Luxe",
@@ -367,7 +367,7 @@ const translations = {
                 challengeDesc: "Augmenter l'acquisition payante et organique de manière rentable tout en pénétrant de nouveaux marchés européens avec un produit haut de gamme.",
                 approachTitle: "Mon Approche",
                 approachDesc: "Accélération de l'acquisition évolutive et rentable en tirant parti d'une méthodologie d'optimisation robuste, de tests créatifs rigoureux et du développement d'entonnoirs à forte conversion.",
-                executedTitle: "Ce que J'ai Exécuté",
+                executedTitle: "Ce que j'ai exécuté",
                 executedList: [
                     "Déploiement de solutions de suivi personnalisées pour garantir l'exactitude des données pour des performances de campagne optimisées.",
                     "Gestion de plus de 1,3M€ de dépenses publicitaires annuelles sur Meta, Google, Outbrain et Taboola",
@@ -378,7 +378,7 @@ const translations = {
                 result1Metric: "ROAS",
                 result1Value: "4.8x",
                 result1Delta: "+128%",
-                result2Metric: "Génération de Leads",
+                result2Metric: "Génération de leads",
                 result2Value: "450k",
                 result3Metric: "CPA",
                 result3Value: "€350",
@@ -392,7 +392,7 @@ const translations = {
                 challengeDesc: "Faire passer une entreprise D2C à forte croissance sur le marché concurrentiel des compléments alimentaires pour seniors de 1M€ à plus de 50M€ de revenus en 3 ans, tout en maintenant des métriques d'acquisition hyper-rentables.",
                 approachTitle: "Mon Approche",
                 approachDesc: "Utilisation de données côté serveur robustes et d'entonnoirs de génération/nurturing de leads à forte conversion pour atteindre une échelle et une rentabilité sans précédent.",
-                executedTitle: "Ce que J'ai Exécuté",
+                executedTitle: "Ce que j'ai exécuté",
                 executedList: [
                     "Gestion et déploiement de campagnes médias 'full-funnel' sur Google, Facebook, Criteo et plateformes Native Ad pour l'acquisition.",
                     "Supervision et mise en œuvre des workflows d'automatisation des e-mails",
@@ -403,7 +403,7 @@ const translations = {
                 result1Metric: "ROAS",
                 result1Value: "5x",
                 result1Delta: "+30%",
-                result2Metric: "Chiffre d'Affaires",
+                result2Metric: "Chiffre d'affaires",
                 result2Value: "+5000%",
                 result2Delta: "sur 3 ans",
                 result3Metric: "CPL",
@@ -418,7 +418,7 @@ const translations = {
                 challengeDesc: "L'objectif principal était d'établir une base pour une acquisition évolutive et axée sur les données en comblant les lacunes méthodologiques et techniques clés dans la stratégie média existante.",
                 approachTitle: "Mon Approche",
                 approachDesc: "Mise en œuvre d'une méthodologie de stabilisation rapide des performances, axée sur le nettoyage structurel et l'intégrité des données pour réduire rapidement les dépenses inutiles et débloquer une échelle d'acquisition rentable.",
-                executedTitle: "Ce que J'ai Exécuté",
+                executedTitle: "Ce que j'ai exécuté",
                 executedList: [
                     "Optimisation structurelle des comptes de campagne pour réduire la friction et améliorer la clarté.",
                     "Restructuration des groupes d'annonces et des stratégies de ciblage pour une meilleure efficacité d'allocation budgétaire.",
@@ -426,7 +426,7 @@ const translations = {
                     "Fourniture de conseils et de formations d'équipe continus sur les tactiques d'achat média avancées.",
                 ],
                 resultsTitle: "Results",
-                result1Metric: "CPL Reduction",
+                result1Metric: "Réduction du CPL",
                 result1Value: "-10%",
                 result1Delta: "",
                 result2Metric: "Activations",
@@ -442,21 +442,21 @@ const translations = {
         contact: {
             subtitle: "CONTACTEZ-MOI",
             // MODIFIÉ: Nouveau titre avec surlignage "t'aider à scale ?"
-            title: "Veux-tu savoir comment je peux <span class='text-yellow-500 font-bold'>t'aider à Scale ?</span>",
+            title: "Veux-tu savoir comment je peux <span class='text-yellow-500 font-bold'>t'aider à scale ?</span>",
             description: "Discutons ensemble de vos défis. Que vous ayez besoin d'une gestion complète de votre campagne ou d'un audit ponctuel, je suis là pour vous aider à prendre de meilleures décisions concernant votre budget marketing.",
             formName: "Votre Nom",
             formEmail: "Votre E-mail Professionnel",
             formProject: "Parlez-moi de votre projet et de vos objectifs.",
             formButton: "Envoyer le Message",
             contactInfo: "Coordonnées",
-            strategyCallsTitle: "Réservez votre Appel d'Introduction",
+            strategyCallsTitle: "Réservez votre appel d'introduction",
             strategyCallsDescription: "Consultation gratuite de 30 min pour discuter de vos besoins",
-            whatsappTitle: "Contact Direct",
+            whatsappTitle: "Contact direct",
             whatsappDescription: "Démarrer une conversation sur WhatsApp.", // Texte corrigé et traduit
             linkedinTitle: "Voir mon profil",
             linkedinDescription: "Connectez-vous pour des insights de l'industrie",
-            calendlyBadgeText: "Planifier un Appel Découverte (30 min)",
-            emailTitle: "Contact Email Direct",
+            calendlyBadgeText: "Planifier un appel découverte (30 min)",
+            emailTitle: "Contact email direct",
             emailDescription: "Envoyer un message professionnel par e-mail.",
             emailAddress: "chappotclement@gmail.com",
             unmaskedEmail: "chappotclement@gmail.com",
