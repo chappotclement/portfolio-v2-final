@@ -521,6 +521,41 @@ const LanguageSwitcher = () => {
         </button>
     );
 };
+// --- NOUVEAU COMPOSANT : Scroll Progress Bar ---
+const ScrollProgressBar = () => {
+    const [scrollPercentage, setScrollPercentage] = useState(0);
+
+    const handleScroll = () => {
+        // Calcule le pourcentage de défilement
+        // Hauteur totale du contenu - Hauteur visible de la fenêtre
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = window.scrollY;
+        
+        if (totalHeight > 0) {
+            const percentage = (scrolled / totalHeight) * 100;
+            setScrollPercentage(percentage);
+        } else {
+            setScrollPercentage(0);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        // Nettoyage de l'écouteur d'événement
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    return (
+        // fixed top-0 et z-50 sont cruciaux pour l'afficher en haut de l'écran, au-dessus du header
+        <div className="fixed top-0 left-0 w-full h-1 bg-slate-800 z-50"> 
+            <div 
+                className="h-1 bg-yellow-500 shadow-lg shadow-yellow-500/50 transition-all duration-100 ease-out" 
+                style={{ width: `${scrollPercentage}%` }}
+            />
+        </div>
+    );
+};
+// ------------------------------------------------------------------
 
 // --- Helper component for Services List ---
 const ServiceItem = ({ icon: Icon, title, description, list }) => {
@@ -759,8 +794,10 @@ function AppContent() {
 
     return (
         <div className="min-h-screen bg-slate-900">
+            {/* 1. NOUVELLE BARRE DE PROGRESSION DU SCROLL - AJOUTÉE ICI */}
+            <ScrollProgressBar />
             {/* Header/Navigation */}
-            <header className="sticky top-0 w-full bg-slate-900 text-white z-50 border-b border-slate-800 backdrop-blur-sm bg-opacity-90 transition-all duration-300">
+            <header className="sticky top-0 w-full bg-slate-900 text-white z-40 border-b border-slate-800 backdrop-blur-sm bg-opacity-90 transition-all duration-300">
                 <nav className="container mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="text-2xl font-bold">CC.</div>
                     <div className="hidden md:flex space-x-8 text-gray-400">
