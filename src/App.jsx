@@ -3,8 +3,10 @@ import { FaWhatsapp, FaEnvelope, FaLinkedinIn } from 'react-icons/fa';
 import { 
     TrendingUp, 
     Target, 
-    BarChart3, 
-    Megaphone, 
+    BarChart3,
+    Users, 
+    Megaphone,
+    Lightbulb, 
     Database, 
     Calculator, 
     ArrowUpRight, 
@@ -52,20 +54,20 @@ const translations = {
         about: {
             subtitle: "ABOUT CLÉMENT",
             // MODIFIÉ: Ajout gras/orange sur 'Concept to Scale.'
-            title: "Driving digital growth for 8+ years: From <span class='text-yellow-600 font-bold'>concept to scale.</span>",
+            title: "Driving digital growth: from <span class='text-yellow-600 font-bold'>concept to scale.</span>",
             p1: "Eight years mastering the full spectrum of digital growth, from specialized campaign execution to global ecosystem architecture. My expertise spans advanced performance marketing, robust tracking infrastructure, and seamless CRM lifecycle integration.",
             // MODIFIÉ: Ajout gras/orange sur 'rigorous analysis meets hands-on execution'
             p2: "My philosophy is simple: <span class='text-yellow-600 font-bold'>rigorous analysis meets hands-on execution.</span> I build strategies designed for sustainable, profitable scale where every euro is tracked and every decision is data-backed.",
             // MODIFIÉ: Ajout gras/orange sur 'Proven track record'
             p3: "<span class='text-yellow-600 font-bold'>Proven track record</span> scaling campaigns across Meta, Google, and Native platforms throughout Europe, consistently exceeding targets while maintaining strict cost efficiency.",
-            stat1Title: "+180%",
-            stat1Desc: "YoY Revenue Growth",
+            stat1Title: "8 years",
+            stat1Desc: "of digital experience",
             stat2Title: "€15M+",
-            stat2Desc: "Ad Spend Managed\nacross platforms",
-            stat3Title: "-42%",
-            stat3Desc: "CPA Reduction\navg. improvement",
-            stat4Title: "+65%",
-            stat4Desc: "LTV Increase\nthrough optimization",
+            stat2Desc: "Ad spend managed\nacross platforms",
+            stat3Title: "10+",
+            stat3Desc: "Teams mentored\nand consulted",
+            stat4Title: "+30",
+            stat4Desc: "Consulting missions\n& strategic audits",
         },
         services: {
             subtitle: "SERVICES",
@@ -272,20 +274,20 @@ const translations = {
         about: {
             subtitle: "À PROPOS DE CLÉMENT",
             // MODIFIÉ: Ajout gras/orange sur 'De la stratégie au scale.'
-            title: "Accélérateur de croissance digitale depuis 8+ ans : <span class='text-yellow-600 font-bold'>De la stratégie au scale.</span>",
+            title: "Accélérateur de croissance digitale: de la <span class='text-yellow-600 font-bold'>stratégie au scale.</span>",
             p1: "Huit années à maîtriser l'ensemble du spectre de la croissance digitale, de l'exécution de campagnes spécialisées à l'architecture d'écosystèmes globaux. Mon expertise couvre le performance marketing management, une infrastructure de tracking solide et l'intégration CRM fluide.",
             // MODIFIÉ: Ajout gras/orange sur 'analyse rigoureuse et exécution terrain'
             p2: "Ma philosophie est simple : <span class='text-yellow-600 font-bold'>rigueur analytique et mise en œuvre opérationnelle.</span> Je construis des stratégies pensées pour un scale durable et rentable, où chaque euro est tracké et chaque décision est data-driven.",
             // MODIFIÉ: Ajout gras/orange sur 'Track record prouvé'
             p3: "<span class='text-yellow-600 font-bold'>Track record prouvé</span> en scaling de campagnes sur Meta, Google et les plateformes Native à travers l'Europe, dépassant constamment les objectifs tout en maintenant une efficacité budgétaire stricte.",
-            stat1Title: "+180%",
-            stat1Desc: "Croissance des revenus annuels",
+            stat1Title: "8 années",
+            stat1Desc: "d'expérience dans le digital",
             stat2Title: "15M€+",
-            stat2Desc: "Dépenses publicitaires gérées\nsur toutes les plateformes",
-            stat3Title: "-42%",
-            stat3Desc: "Réduction du CPA\nmoy. d'amélioration",
-            stat4Title: "+65%",
-            stat4Desc: "Augmentation de la LTV\npar l'optimisation",
+            stat2Desc: "dépenses publicitaires gérées\nsur toutes les plateformes",
+            stat3Title: "10+",
+            stat3Desc: "personnes gérées\nen direct",
+            stat4Title: "+30",
+            stat4Desc: "Missions de conseil\net audits stratégiques",
         },
         services: {
             subtitle: "SERVICES",
@@ -996,14 +998,14 @@ function AppContent() {
 
                             {/* Card 3: -42% */}
                             <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:bg-yellow-500 hover:shadow-xl transition-all duration-300 group cursor-pointer">
-                                <Target className="text-yellow-600 group-hover:text-black mb-4 transition-colors" size={32} />
+                                <Users className="text-yellow-600 group-hover:text-black mb-4 transition-colors" size={32} />
                                 <h3 className="text-4xl font-extrabold text-slate-900 group-hover:text-black mb-2 transition-colors">{t.about.stat3Title}</h3>
                                 <p className="text-gray-600 group-hover:text-black text-sm transition-colors">{renderStatDescription(t.about.stat3Desc)}</p>
                             </div>
 
                             {/* Card 4: +65% */}
                             <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:bg-yellow-500 hover:shadow-xl transition-all duration-300 group cursor-pointer">
-                                <BarChart3 className="text-yellow-600 group-hover:text-black mb-4 transition-colors" size={32} />
+                                <Lightbulb className="text-yellow-600 group-hover:text-black mb-4 transition-colors" size={32} />
                                 <h3 className="text-4xl font-extrabold text-slate-900 group-hover:text-black mb-2 transition-colors">{t.about.stat4Title}</h3>
                                 <p className="text-gray-600 group-hover:text-black text-sm transition-colors">{renderStatDescription(t.about.stat4Desc)}</p>
                             </div>
