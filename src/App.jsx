@@ -1290,29 +1290,29 @@ function AppContent() {
                         
                         {/* NOUVEAUX LIENS SOCIAUX */}
                         <div className="flex space-x-4">
-                            
-                            {/* Lien LinkedIn */}
-                            <a 
-                                href="https://www.linkedin.com/in/clementchappot/" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-yellow-500 transition-colors" 
-                                aria-label="Profil LinkedIn"
-                            >
-                                <FaLinkedinIn size={20} />
-                            </a>
-                            
-                            {/* Lien WhatsApp */}
-                            <a 
-                                href="https://wa.me/41798102112" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-yellow-500 transition-colors" 
-                                aria-label="Contacter sur WhatsApp"
-                            >
-                                <FaWhatsapp size={20} />
-                            </a>
-                        </div>
+                
+                {/* Lien LinkedIn */}
+                <a 
+                    href="https://www.linkedin.com/in/clementchappot/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[#0A66C2] hover:opacity-80 transition-colors" 
+                    aria-label="Profil LinkedIn"
+                >
+                    <FaLinkedinIn size={20} />
+                </a>
+                
+                {/* Lien WhatsApp */}
+                <a 
+                    href="https://wa.me/41798102112" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[#25D366] hover:opacity-80 transition-colors" 
+                    aria-label="Contacter sur WhatsApp"
+                >
+                    <FaWhatsapp size={20} />
+                </a>
+            </div>
                     </div>
                 </div>
             </footer>
