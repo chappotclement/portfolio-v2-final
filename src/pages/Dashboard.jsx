@@ -28,16 +28,16 @@ import store from '../data/store';
 
 // ─── Helpers ───────────────────────────────────────────────
 const STATUS_CONFIG = {
-  todo: { label: '\u00c0 faire', icon: ListTodo, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.25)' },
+  todo: { label: 'À faire', icon: ListTodo, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.25)' },
   in_progress: { label: 'En cours', icon: Clock, color: '#facc15', bg: 'rgba(250,204,21,0.1)', border: 'rgba(250,204,21,0.25)' },
-  done: { label: 'Termin\u00e9', icon: CheckCircle2, color: '#22c55e', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.25)' },
+  done: { label: 'Terminé', icon: CheckCircle2, color: '#22c55e', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.25)' },
 };
 
 const INVOICE_STATUS = {
-  to_create: { label: '\u00c0 cr\u00e9er', icon: FileText, color: '#94a3b8' },
-  created: { label: 'Cr\u00e9\u00e9e', icon: FileText, color: '#facc15' },
-  sent: { label: 'Envoy\u00e9e', icon: Send, color: '#3b82f6' },
-  paid: { label: 'Pay\u00e9e', icon: CreditCard, color: '#22c55e' },
+  to_create: { label: 'À créer', icon: FileText, color: '#94a3b8' },
+  created: { label: 'Créée', icon: FileText, color: '#facc15' },
+  sent: { label: 'Envoyée', icon: Send, color: '#3b82f6' },
+  paid: { label: 'Payée', icon: CreditCard, color: '#22c55e' },
   overdue: { label: 'En retard', icon: AlertCircle, color: '#ef4444' },
 };
 
@@ -47,7 +47,7 @@ const PRIORITY_CONFIG = {
   high: { label: 'Haute', color: '#ef4444' },
 };
 
-const MONTHS_FR = ['Janvier', 'F\u00e9vrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Ao\u00fbt', 'Septembre', 'Octobre', 'Novembre', 'D\u00e9cembre'];
+const MONTHS_FR = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
 function formatDate(dateStr) {
   if (!dateStr) return '-';
@@ -192,7 +192,7 @@ function KanbanColumn({ status, tasks, clients, onUpdateTask, onDeleteTask, onMo
         ))}
         {tasks.length === 0 && (
           <div className="text-center py-8 text-gray-600 text-sm border border-dashed border-slate-700 rounded-xl">
-            Aucune t\u00e2che
+            Aucune tâche
           </div>
         )}
       </div>
@@ -217,7 +217,7 @@ function AddTaskModal({ open, onClose, clients, onAdd }) {
   };
 
   return (
-    <Modal open={open} onClose={onClose} title="Nouvelle t\u00e2che">
+    <Modal open={open} onClose={onClose} title="Nouvelle tâche">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="text-sm text-gray-400 mb-1 block">Titre *</label>
@@ -235,7 +235,7 @@ function AddTaskModal({ open, onClose, clients, onAdd }) {
           <textarea
             value={description}
             onChange={e => setDescription(e.target.value)}
-            placeholder="D\u00e9tails de la t\u00e2che..."
+            placeholder="Détails de la tâche..."
             rows={3}
             className="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors resize-none"
           />
@@ -254,7 +254,7 @@ function AddTaskModal({ open, onClose, clients, onAdd }) {
             </select>
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-1 block">Priorit\u00e9</label>
+            <label className="text-sm text-gray-400 mb-1 block">Priorité</label>
             <select
               value={priority}
               onChange={e => setPriority(e.target.value)}
@@ -372,7 +372,7 @@ function AddInvoiceModal({ open, onClose, clients, onAdd }) {
           <textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
-            placeholder="D\u00e9tails suppl\u00e9mentaires..."
+            placeholder="Détails supplémentaires..."
             rows={2}
             className="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors resize-none"
           />
@@ -396,7 +396,7 @@ function AddInvoiceModal({ open, onClose, clients, onAdd }) {
             type="submit"
             className="px-5 py-2 bg-yellow-500 text-slate-900 font-semibold text-sm rounded-lg hover:bg-yellow-400 transition-colors"
           >
-            Cr\u00e9er
+            Créer
           </button>
         </div>
       </form>
@@ -426,15 +426,15 @@ function InvoiceRow({ invoice, clients, onUpdate, onDelete }) {
   };
 
   const nextAction = {
-    to_create: 'Marquer cr\u00e9\u00e9e',
-    created: 'Marquer envoy\u00e9e',
-    sent: 'Marquer pay\u00e9e',
+    to_create: 'Marquer créée',
+    created: 'Marquer envoyée',
+    sent: 'Marquer payée',
   };
 
   const prevAction = {
-    created: '\u2190 \u00c0 cr\u00e9er',
-    sent: '\u2190 Cr\u00e9\u00e9e',
-    paid: '\u2190 Envoy\u00e9e',
+    created: '← À créer',
+    sent: '← Créée',
+    paid: '← Envoyée',
   };
 
   return (
@@ -641,7 +641,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <a href="/" className="text-gray-400 hover:text-white transition-colors text-sm">
-                \u2190 Portfolio
+                ← Portfolio
               </a>
               <div className="w-px h-6 bg-slate-700" />
               <div className="flex items-center gap-2">
@@ -653,7 +653,7 @@ export default function Dashboard() {
               <button
                 onClick={handleExport}
                 className="flex items-center gap-2 px-3 py-1.5 text-xs text-gray-400 hover:text-white border border-slate-700 rounded-lg hover:border-slate-600 transition-colors"
-                title="Exporter les donn\u00e9es"
+                title="Exporter les données"
               >
                 <Download size={14} />
                 Export
@@ -661,7 +661,7 @@ export default function Dashboard() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="flex items-center gap-2 px-3 py-1.5 text-xs text-gray-400 hover:text-white border border-slate-700 rounded-lg hover:border-slate-600 transition-colors"
-                title="Importer des donn\u00e9es"
+                title="Importer des données"
               >
                 <Upload size={14} />
                 Import
@@ -675,11 +675,11 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-          <StatCard icon={ListTodo} label="\u00c0 faire" value={tasksTodo} color="#94a3b8" />
+          <StatCard icon={ListTodo} label="À faire" value={tasksTodo} color="#94a3b8" />
           <StatCard icon={Clock} label="En cours" value={tasksInProgress} color="#facc15" />
-          <StatCard icon={CheckCircle2} label="Termin\u00e9es" value={tasksDone} color="#22c55e" />
+          <StatCard icon={CheckCircle2} label="Terminées" value={tasksDone} color="#22c55e" />
           <StatCard icon={Receipt} label="Factures en attente" value={invoicesPending} color="#f97316" />
-          <StatCard icon={CreditCard} label="Revenus encaiss\u00e9s" value={`${totalRevenue.toLocaleString('fr-CH')}`} color="#22c55e" />
+          <StatCard icon={CreditCard} label="Revenus encaissés" value={`${totalRevenue.toLocaleString('fr-CH')}`} color="#22c55e" />
         </div>
 
         {/* Tabs + Filters */}
@@ -692,7 +692,7 @@ export default function Dashboard() {
               }`}
             >
               <ListTodo size={16} />
-              T\u00e2ches
+              Tâches
             </button>
             <button
               onClick={() => setActiveTab('invoices')}
@@ -727,7 +727,7 @@ export default function Dashboard() {
               className="flex items-center gap-2 px-4 py-2 bg-yellow-500 text-slate-900 font-semibold text-sm rounded-lg hover:bg-yellow-400 transition-colors"
             >
               <Plus size={16} />
-              {activeTab === 'tasks' ? 'Nouvelle t\u00e2che' : 'Nouvelle facture'}
+              {activeTab === 'tasks' ? 'Nouvelle tâche' : 'Nouvelle facture'}
             </button>
           </div>
         </div>
