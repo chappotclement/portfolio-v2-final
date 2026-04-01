@@ -91,34 +91,34 @@ function Modal({ open, onClose, title, children }) {
 }
 
 // ─── Task Card ─────────────────────────────────────────────
-function TaskCard({ task, clients, onUpdate, onDelete, onMove }) {
+function TaskCard({ task, clients, onUpdate, onDelete, onMove, compact }) {
   const client = clients.find(c => c.id === task.projectId);
   const priority = PRIORITY_CONFIG[task.priority] || PRIORITY_CONFIG.medium;
 
   return (
-    <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-4 hover:border-slate-600/60 hover:bg-slate-800/60 transition-all duration-200 group relative overflow-hidden">
+    <div className={`bg-slate-800/40 border border-slate-700/40 rounded-lg hover:border-slate-600/60 hover:bg-slate-800/60 transition-all duration-200 group relative overflow-hidden ${compact ? 'p-2.5' : 'p-4 rounded-xl'}`}>
       {/* Priority indicator bar */}
-      <div className="absolute top-0 left-0 w-1 h-full rounded-l-xl" style={{ backgroundColor: priority.color + '80' }} />
+      <div className="absolute top-0 left-0 w-1 h-full rounded-l-lg" style={{ backgroundColor: priority.color + '80' }} />
 
       <div className="pl-2">
-        <div className="flex items-start justify-between gap-2 mb-1.5">
-          <h4 className="text-[13px] font-semibold text-white leading-snug flex-1">{task.title}</h4>
+        <div className="flex items-start justify-between gap-1.5 mb-1">
+          <h4 className={`font-semibold text-white leading-snug flex-1 ${compact ? 'text-[11px]' : 'text-[13px]'}`}>{task.title}</h4>
           <button
             onClick={() => onDelete(task.id)}
-            className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 transition-all shrink-0 p-1 rounded hover:bg-red-500/10"
+            className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 transition-all shrink-0 p-0.5 rounded hover:bg-red-500/10"
             title="Supprimer"
           >
-            <Trash2 size={13} />
+            <Trash2 size={11} />
           </button>
         </div>
 
-        {task.description && (
+        {task.description && !compact && (
           <p className="text-xs text-gray-500 mb-3 line-clamp-2 leading-relaxed">{task.description}</p>
         )}
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {client && (
+          <div className="flex items-center gap-1 flex-wrap">
+            {!compact && client && (
               <span
                 className="text-[10px] font-semibold px-2 py-0.5 rounded-md"
                 style={{ backgroundColor: client.color + '18', color: client.color }}
@@ -127,10 +127,13 @@ function TaskCard({ task, clients, onUpdate, onDelete, onMove }) {
               </span>
             )}
             {task.source === 'claude-code' && (
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-violet-500/15 text-violet-400">
+              <span className={`font-semibold rounded-md bg-violet-500/15 text-violet-400 ${compact ? 'text-[9px] px-1.5 py-px' : 'text-[10px] px-2 py-0.5'}`}>
                 Claude
               </span>
             )}
+            <span className={`font-semibold rounded-md ${compact ? 'text-[9px] px-1.5 py-px' : 'text-[10px] px-2 py-0.5'}`} style={{ backgroundColor: priority.color + '15', color: priority.color }}>
+              {priority.label}
+            </span>
           </div>
 
           <div className="flex gap-0.5">
@@ -140,10 +143,10 @@ function TaskCard({ task, clients, onUpdate, onDelete, onMove }) {
                   const prev = task.status === 'done' ? 'in_progress' : 'todo';
                   onMove(task.id, prev);
                 }}
-                className="text-gray-600 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-slate-700/50"
+                className="text-gray-600 hover:text-white transition-colors p-1 rounded-md hover:bg-slate-700/50"
                 title="Reculer"
               >
-                <ArrowLeft size={13} />
+                <ArrowLeft size={compact ? 11 : 13} />
               </button>
             )}
             {task.status !== 'done' && (
@@ -152,55 +155,14 @@ function TaskCard({ task, clients, onUpdate, onDelete, onMove }) {
                   const next = task.status === 'todo' ? 'in_progress' : 'done';
                   onMove(task.id, next);
                 }}
-                className="text-gray-600 hover:text-yellow-400 transition-colors p-1.5 rounded-lg hover:bg-yellow-500/10"
+                className="text-gray-600 hover:text-yellow-400 transition-colors p-1 rounded-md hover:bg-yellow-500/10"
                 title="Avancer"
               >
-                <ArrowRight size={13} />
+                <ArrowRight size={compact ? 11 : 13} />
               </button>
             )}
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Kanban Column ─────────────────────────────────────────
-function KanbanColumn({ status, tasks, clients, onUpdateTask, onDeleteTask, onMoveTask }) {
-  const config = STATUS_CONFIG[status];
-  const Icon = config.icon;
-
-  return (
-    <div className="flex-1 min-w-[300px]">
-      <div className="flex items-center gap-2.5 mb-4 pb-3">
-        <div className="p-1.5 rounded-lg" style={{ backgroundColor: config.bg }}>
-          <Icon size={15} style={{ color: config.color }} />
-        </div>
-        <h3 className="font-semibold text-sm text-gray-200">{config.label}</h3>
-        <span
-          className="text-[11px] min-w-[22px] text-center px-1.5 py-0.5 rounded-md font-bold"
-          style={{ backgroundColor: config.bg, color: config.color }}
-        >
-          {tasks.length}
-        </span>
-        <div className="flex-1 h-px ml-2" style={{ backgroundColor: config.border }} />
-      </div>
-      <div className="space-y-2.5">
-        {tasks.map(task => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            clients={clients}
-            onUpdate={onUpdateTask}
-            onDelete={onDeleteTask}
-            onMove={onMoveTask}
-          />
-        ))}
-        {tasks.length === 0 && (
-          <div className="text-center py-10 text-gray-600 text-xs border border-dashed border-slate-700/50 rounded-xl bg-slate-800/10">
-            Aucune tâche
-          </div>
-        )}
       </div>
     </div>
   );
@@ -661,20 +623,86 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* ─── Tasks Tab: Kanban ─── */}
+        {/* ─── Tasks Tab: Kanban par client ─── */}
         {activeTab === 'tasks' && (
-          <div className="flex gap-5 overflow-x-auto pb-4">
-            {['todo', 'in_progress', 'done'].map(status => (
-              <KanbanColumn
-                key={status}
-                status={status}
-                tasks={filteredTasks.filter(t => t.status === status)}
-                clients={clients}
-                onUpdateTask={handleUpdateTask}
-                onDeleteTask={handleDeleteTask}
-                onMoveTask={handleMoveTask}
-              />
-            ))}
+          <div className="space-y-6">
+            {/* Column headers */}
+            <div className="grid grid-cols-3 gap-4">
+              {['todo', 'in_progress', 'done'].map(status => {
+                const config = STATUS_CONFIG[status];
+                const Icon = config.icon;
+                const count = filteredTasks.filter(t => t.status === status).length;
+                return (
+                  <div key={status} className="flex items-center gap-2">
+                    <div className="p-1 rounded-md" style={{ backgroundColor: config.bg }}>
+                      <Icon size={13} style={{ color: config.color }} />
+                    </div>
+                    <span className="text-xs font-semibold text-gray-400">{config.label}</span>
+                    <span className="text-[10px] min-w-[18px] text-center px-1 py-0.5 rounded-md font-bold" style={{ backgroundColor: config.bg, color: config.color }}>
+                      {count}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Rows per client */}
+            {(() => {
+              const clientsWithTasks = (filterProject === 'all' ? activeClients : activeClients.filter(c => c.id === filterProject))
+                .filter(c => filteredTasks.some(t => t.projectId === c.id));
+
+              if (clientsWithTasks.length === 0) {
+                return (
+                  <div className="text-center py-16 text-gray-600 border border-dashed border-slate-700/40 rounded-xl bg-slate-800/10">
+                    <ListTodo size={28} className="mx-auto mb-3 opacity-30" />
+                    <p className="text-sm font-medium text-gray-500">Aucune tâche</p>
+                    <p className="text-xs mt-1 text-gray-600">Clique sur "Nouvelle tâche" pour commencer</p>
+                  </div>
+                );
+              }
+
+              return clientsWithTasks.map(client => {
+                const clientTasks = filteredTasks.filter(t => t.projectId === client.id);
+                return (
+                  <div key={client.id} className="bg-slate-800/15 border border-slate-700/20 rounded-xl overflow-hidden">
+                    {/* Client header */}
+                    <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-slate-700/20">
+                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: client.color }} />
+                      <span className="text-xs font-bold text-gray-300">{client.name}</span>
+                      <span className="text-[10px] text-gray-600 font-medium ml-1">
+                        {clientTasks.length} tâche{clientTasks.length > 1 ? 's' : ''}
+                      </span>
+                    </div>
+                    {/* 3-column kanban row */}
+                    <div className="grid grid-cols-3 gap-px bg-slate-700/10">
+                      {['todo', 'in_progress', 'done'].map(status => {
+                        const statusTasks = clientTasks.filter(t => t.status === status);
+                        return (
+                          <div key={status} className="p-3 min-h-[80px] bg-[#0c1021]/50">
+                            <div className="space-y-2">
+                              {statusTasks.map(task => (
+                                <TaskCard
+                                  key={task.id}
+                                  task={task}
+                                  clients={clients}
+                                  onUpdate={handleUpdateTask}
+                                  onDelete={handleDeleteTask}
+                                  onMove={handleMoveTask}
+                                  compact
+                                />
+                              ))}
+                              {statusTasks.length === 0 && (
+                                <div className="text-center py-4 text-gray-700 text-[10px]">-</div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              });
+            })()}
           </div>
         )}
 
