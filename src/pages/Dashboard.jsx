@@ -28,13 +28,13 @@ import store from '../data/store';
 
 // ─── Helpers ───────────────────────────────────────────────
 const STATUS_CONFIG = {
-  todo: { label: 'A faire', icon: ListTodo, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.25)' },
+  todo: { label: '\u00c0 faire', icon: ListTodo, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.25)' },
   in_progress: { label: 'En cours', icon: Clock, color: '#facc15', bg: 'rgba(250,204,21,0.1)', border: 'rgba(250,204,21,0.25)' },
   done: { label: 'Termin\u00e9', icon: CheckCircle2, color: '#22c55e', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.25)' },
 };
 
 const INVOICE_STATUS = {
-  to_create: { label: 'A cr\u00e9er', icon: FileText, color: '#94a3b8' },
+  to_create: { label: '\u00c0 cr\u00e9er', icon: FileText, color: '#94a3b8' },
   created: { label: 'Cr\u00e9\u00e9e', icon: FileText, color: '#facc15' },
   sent: { label: 'Envoy\u00e9e', icon: Send, color: '#3b82f6' },
   paid: { label: 'Pay\u00e9e', icon: CreditCard, color: '#22c55e' },
@@ -50,7 +50,7 @@ const PRIORITY_CONFIG = {
 const MONTHS_FR = ['Janvier', 'F\u00e9vrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Ao\u00fbt', 'Septembre', 'Octobre', 'Novembre', 'D\u00e9cembre'];
 
 function formatDate(dateStr) {
-  if (!dateStr) return '\u2014';
+  if (!dateStr) return '-';
   const d = new Date(dateStr);
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
@@ -650,7 +650,7 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-          <StatCard icon={ListTodo} label="A faire" value={tasksTodo} color="#94a3b8" />
+          <StatCard icon={ListTodo} label="\u00c0 faire" value={tasksTodo} color="#94a3b8" />
           <StatCard icon={Clock} label="En cours" value={tasksInProgress} color="#facc15" />
           <StatCard icon={CheckCircle2} label="Termin\u00e9es" value={tasksDone} color="#22c55e" />
           <StatCard icon={Receipt} label="Factures en attente" value={invoicesPending} color="#f97316" />

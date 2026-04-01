@@ -49,7 +49,7 @@ const DEFAULT_CLIENTS = [
   },
   {
     id: 'la-cave-a-cigare',
-    name: 'La Cave a Cigare',
+    name: 'La Cave à Cigare',
     active: true,
     color: '#8b5cf6',
     hourlyRate: null,
@@ -84,8 +84,8 @@ const DEFAULT_TASKS = [
   {
     id: 'demo-2',
     projectId: 'helvecy',
-    title: 'Briefs creatifs statiques Avril',
-    description: 'Preparer les briefs pour les visuels statiques du mois',
+    title: 'Briefs créatifs statiques Avril',
+    description: 'Préparer les briefs pour les visuels statiques du mois',
     status: 'in_progress',
     priority: 'high',
     source: 'manual',
@@ -95,7 +95,7 @@ const DEFAULT_TASKS = [
   {
     id: 'demo-3',
     projectId: 'funky-frames',
-    title: 'Migration HTTPS complete',
+    title: 'Migration HTTPS complète',
     description: 'Finaliser la redirection HTTP vers HTTPS sur tout le site',
     status: 'todo',
     priority: 'medium',
@@ -107,7 +107,7 @@ const DEFAULT_TASKS = [
     id: 'demo-4',
     projectId: 'funky-frames',
     title: 'SEO descriptions produits',
-    description: 'Rediger les meta descriptions pour toutes les pages produits',
+    description: 'Rédiger les méta descriptions pour toutes les pages produits',
     status: 'in_progress',
     priority: 'medium',
     source: 'claude-code',
@@ -117,8 +117,8 @@ const DEFAULT_TASKS = [
   {
     id: 'demo-5',
     projectId: 'la-cave-a-cigare',
-    title: "Developpement app Shopify",
-    description: "Continuer le developpement de l'app custom Shopify",
+    title: "Développement app Shopify",
+    description: "Continuer le développement de l'app custom Shopify",
     status: 'in_progress',
     priority: 'high',
     source: 'manual',
