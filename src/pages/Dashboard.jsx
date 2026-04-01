@@ -419,10 +419,22 @@ function InvoiceRow({ invoice, clients, onUpdate, onDelete }) {
     sent: 'paid',
   };
 
+  const prevStatus = {
+    created: 'to_create',
+    sent: 'created',
+    paid: 'sent',
+  };
+
   const nextAction = {
     to_create: 'Marquer cr\u00e9\u00e9e',
     created: 'Marquer envoy\u00e9e',
     sent: 'Marquer pay\u00e9e',
+  };
+
+  const prevAction = {
+    created: '\u2190 \u00c0 cr\u00e9er',
+    sent: '\u2190 Cr\u00e9\u00e9e',
+    paid: '\u2190 Envoy\u00e9e',
   };
 
   return (
@@ -467,6 +479,19 @@ function InvoiceRow({ invoice, clients, onUpdate, onDelete }) {
           >
             <ExternalLink size={14} />
           </a>
+        )}
+        {prevStatus[invoice.status] && (
+          <button
+            onClick={() => {
+              const updates = { status: prevStatus[invoice.status] };
+              if (prevStatus[invoice.status] !== 'paid') updates.paidAt = null;
+              if (prevStatus[invoice.status] === 'to_create') updates.sentAt = null;
+              onUpdate(invoice.id, updates);
+            }}
+            className="text-xs px-3 py-1.5 rounded-lg bg-slate-700/30 text-gray-400 border border-slate-600/30 hover:bg-slate-700/50 hover:text-white transition-colors font-medium"
+          >
+            {prevAction[invoice.status]}
+          </button>
         )}
         {invoice.status !== 'paid' && (
           <button
