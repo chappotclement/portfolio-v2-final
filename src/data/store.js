@@ -127,6 +127,37 @@ const DEFAULT_TASKS = [
   },
 ];
 
+const DEFAULT_INVOICES = [
+  {
+    id: 'inv-helvecy-janfev-2026',
+    projectId: 'helvecy',
+    month: '2026-02',
+    amount: 1000,
+    hours: 12.5,
+    currency: 'CHF',
+    status: 'paid',
+    notes: 'Set-up Mailchimp & Prestashop, automatisations email, debug tags stores',
+    createdAt: '2026-03-18T10:00:00Z',
+    sentAt: '2026-03-18T10:00:00Z',
+    paidAt: '2026-03-25T10:00:00Z',
+    dueDate: '2026-04-17T10:00:00Z',
+  },
+  {
+    id: 'inv-ff-mars-2026',
+    projectId: 'funky-frames',
+    month: '2026-03',
+    amount: 2200,
+    hours: 22,
+    currency: 'CHF',
+    status: 'to_create',
+    notes: 'Audit complet, optimisation WooCommerce, SEO produits, FAQ, performance mobile',
+    createdAt: '2026-04-01T12:00:00Z',
+    sentAt: null,
+    paidAt: null,
+    dueDate: '2026-05-01T12:00:00Z',
+  },
+];
+
 // --- Utility functions ---
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
@@ -225,7 +256,7 @@ const store = {
 
   // --- Invoices ---
   getInvoices() {
-    return loadFromStorage(STORAGE_KEYS.invoices, []);
+    return loadFromStorage(STORAGE_KEYS.invoices, DEFAULT_INVOICES);
   },
 
   getInvoicesByProject(projectId) {
