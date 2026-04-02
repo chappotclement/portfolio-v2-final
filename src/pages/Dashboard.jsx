@@ -172,12 +172,19 @@ function TaskCard({ task, clients, onUpdate, onDelete, onMove, compact }) {
 function AddTaskModal({ open, onClose, clients, onAdd }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [projectId, setProjectId] = useState(clients[0]?.id || '');
+  const [projectId, setProjectId] = useState('');
   const [priority, setPriority] = useState('medium');
+
+  // Sync projectId when clients load or modal opens
+  useEffect(() => {
+    if (open && clients.length > 0 && !clients.find(c => c.id === projectId)) {
+      setProjectId(clients[0].id);
+    }
+  }, [open, clients]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim() || !projectId) return;
     onAdd({ title: title.trim(), description: description.trim(), projectId, priority });
     setTitle('');
     setDescription('');
@@ -244,11 +251,17 @@ function AddTaskModal({ open, onClose, clients, onAdd }) {
 // ─── Add Invoice Modal ─────────────────────────────────────
 function AddInvoiceModal({ open, onClose, clients, onAdd }) {
   const now = new Date();
-  const [projectId, setProjectId] = useState(clients[0]?.id || '');
+  const [projectId, setProjectId] = useState('');
   const [month, setMonth] = useState(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`);
   const [amount, setAmount] = useState('');
   const [hours, setHours] = useState('');
   const [notes, setNotes] = useState('');
+
+  useEffect(() => {
+    if (open && clients.length > 0 && !clients.find(c => c.id === projectId)) {
+      setProjectId(clients[0].id);
+    }
+  }, [open, clients]);
 
   const client = clients.find(c => c.id === projectId);
 

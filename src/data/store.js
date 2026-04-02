@@ -309,9 +309,34 @@ const store = {
   importAll(jsonString) {
     try {
       const data = typeof jsonString === 'string' ? JSON.parse(jsonString) : jsonString;
-      if (data.clients) saveToStorage(STORAGE_KEYS.clients, data.clients);
-      if (data.tasks) saveToStorage(STORAGE_KEYS.tasks, data.tasks);
-      if (data.invoices) saveToStorage(STORAGE_KEYS.invoices, data.invoices);
+      // Merge instead of replace: add new items, update existing ones by id
+      if (data.clients) {
+        const existing = this.getClients();
+        data.clients.forEach(imported => {
+          const idx = existing.findIndex(c => c.id === imported.id);
+          if (idx >= 0) existing[idx] = { ...existing[idx], ...imported };
+          else existing.push(imported);
+        });
+        saveToStorage(STORAGE_KEYS.clients, existing);
+      }
+      if (data.tasks) {
+        const existing = this.getTasks();
+        data.tasks.forEach(imported => {
+          const idx = existing.findIndex(t => t.id === imported.id);
+          if (idx >= 0) existing[idx] = { ...existing[idx], ...imported };
+          else existing.push(imported);
+        });
+        saveToStorage(STORAGE_KEYS.tasks, existing);
+      }
+      if (data.invoices) {
+        const existing = this.getInvoices();
+        data.invoices.forEach(imported => {
+          const idx = existing.findIndex(i => i.id === imported.id);
+          if (idx >= 0) existing[idx] = { ...existing[idx], ...imported };
+          else existing.push(imported);
+        });
+        saveToStorage(STORAGE_KEYS.invoices, existing);
+      }
       return true;
     } catch (e) {
       console.error('Import failed:', e);
