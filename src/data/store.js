@@ -38,6 +38,16 @@ const DEFAULT_CLIENTS = [
     contactEmail: '',
   },
   {
+    id: 'nicolas-brinster',
+    name: 'Nicolas Brinster',
+    active: true,
+    color: '#10b981',
+    hourlyRate: null,
+    currency: 'EUR',
+    sheetsUrl: '',
+    contactEmail: '',
+  },
+  {
     id: 'europe-cam',
     name: 'Europe Cam',
     active: true,
