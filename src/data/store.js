@@ -68,6 +68,16 @@ const DEFAULT_CLIENTS = [
     contactEmail: '',
   },
   {
+    id: 'kevin-forestier',
+    name: 'Kevin Forestier',
+    active: true,
+    color: '#06b6d4',
+    hourlyRate: null,
+    currency: 'EUR',
+    sheetsUrl: '',
+    contactEmail: '',
+  },
+  {
     id: 'stylla',
     name: 'Stylla',
     active: false,

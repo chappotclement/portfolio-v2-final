@@ -25,6 +25,8 @@ import {
   Filter,
   TrendingUp,
   Zap,
+  Pencil,
+  RotateCcw,
 } from 'lucide-react';
 import store from '../data/store';
 
@@ -67,6 +69,20 @@ function formatCurrency(amount) {
   return amount.toLocaleString('fr-CH', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
+function getDeadlineInfo(deadline) {
+  if (!deadline) return null;
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const dl = new Date(deadline);
+  dl.setHours(0, 0, 0, 0);
+  const diff = Math.ceil((dl - now) / (1000 * 60 * 60 * 24));
+  if (diff < 0) return { label: `${Math.abs(diff)}j retard`, color: '#ef4444', bg: 'rgba(239,68,68,0.12)' };
+  if (diff === 0) return { label: "Aujourd'hui", color: '#ef4444', bg: 'rgba(239,68,68,0.12)' };
+  if (diff <= 3) return { label: `${diff}j`, color: '#f97316', bg: 'rgba(249,115,22,0.12)' };
+  if (diff <= 7) return { label: `${diff}j`, color: '#facc15', bg: 'rgba(250,204,21,0.12)' };
+  return { label: `${diff}j`, color: '#22c55e', bg: 'rgba(34,197,94,0.12)' };
+}
+
 // ─── Modal Component ───────────────────────────────────────
 function Modal({ open, onClose, title, children }) {
   if (!open) return null;
@@ -91,25 +107,38 @@ function Modal({ open, onClose, title, children }) {
 }
 
 // ─── Task Card ─────────────────────────────────────────────
-function TaskCard({ task, clients, onUpdate, onDelete, onMove, compact }) {
+function TaskCard({ task, clients, onUpdate, onDelete, onMove, onEdit, compact }) {
   const client = clients.find(c => c.id === task.projectId);
   const priority = PRIORITY_CONFIG[task.priority] || PRIORITY_CONFIG.medium;
+  const deadlineInfo = getDeadlineInfo(task.deadline);
 
   return (
-    <div className={`bg-slate-800/40 border border-slate-700/40 rounded-lg hover:border-slate-600/60 hover:bg-slate-800/60 transition-all duration-200 group relative overflow-hidden ${compact ? 'p-2.5' : 'p-4 rounded-xl'}`}>
+    <div
+      className={`bg-slate-800/40 border border-slate-700/40 rounded-lg hover:border-slate-600/60 hover:bg-slate-800/60 transition-all duration-200 group relative overflow-hidden cursor-pointer ${compact ? 'p-2.5' : 'p-4 rounded-xl'}`}
+      onClick={() => onEdit && onEdit(task)}
+    >
       {/* Priority indicator bar */}
       <div className="absolute top-0 left-0 w-1 h-full rounded-l-lg" style={{ backgroundColor: priority.color + '80' }} />
 
       <div className="pl-2">
         <div className="flex items-start justify-between gap-1.5 mb-1">
           <h4 className={`font-semibold text-white leading-snug flex-1 ${compact ? 'text-[11px]' : 'text-[13px]'}`}>{task.title}</h4>
-          <button
-            onClick={() => onDelete(task.id)}
-            className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 transition-all shrink-0 p-0.5 rounded hover:bg-red-500/10"
-            title="Supprimer"
-          >
-            <Trash2 size={11} />
-          </button>
+          <div className="flex items-center gap-0.5 shrink-0">
+            <button
+              onClick={(e) => { e.stopPropagation(); onEdit && onEdit(task); }}
+              className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-yellow-400 transition-all p-0.5 rounded hover:bg-yellow-500/10"
+              title="Modifier"
+            >
+              <Pencil size={11} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); onDelete(task.id); }}
+              className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 transition-all p-0.5 rounded hover:bg-red-500/10"
+              title="Supprimer"
+            >
+              <Trash2 size={11} />
+            </button>
+          </div>
         </div>
 
         {task.description && !compact && (
@@ -134,12 +163,19 @@ function TaskCard({ task, clients, onUpdate, onDelete, onMove, compact }) {
             <span className={`font-semibold rounded-md ${compact ? 'text-[9px] px-1.5 py-px' : 'text-[10px] px-2 py-0.5'}`} style={{ backgroundColor: priority.color + '15', color: priority.color }}>
               {priority.label}
             </span>
+            {deadlineInfo && (
+              <span className={`font-semibold rounded-md flex items-center gap-0.5 ${compact ? 'text-[9px] px-1.5 py-px' : 'text-[10px] px-2 py-0.5'}`} style={{ backgroundColor: deadlineInfo.bg, color: deadlineInfo.color }}>
+                <CalendarDays size={compact ? 8 : 9} />
+                {deadlineInfo.label}
+              </span>
+            )}
           </div>
 
           <div className="flex gap-0.5">
             {task.status !== 'todo' && (
               <button
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   const prev = task.status === 'done' ? 'in_progress' : 'todo';
                   onMove(task.id, prev);
                 }}
@@ -151,7 +187,8 @@ function TaskCard({ task, clients, onUpdate, onDelete, onMove, compact }) {
             )}
             {task.status !== 'done' && (
               <button
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   const next = task.status === 'todo' ? 'in_progress' : 'done';
                   onMove(task.id, next);
                 }}
@@ -174,8 +211,8 @@ function AddTaskModal({ open, onClose, clients, onAdd }) {
   const [description, setDescription] = useState('');
   const [projectId, setProjectId] = useState('');
   const [priority, setPriority] = useState('medium');
+  const [deadline, setDeadline] = useState('');
 
-  // Sync projectId when clients load or modal opens
   useEffect(() => {
     if (open && clients.length > 0 && !clients.find(c => c.id === projectId)) {
       setProjectId(clients[0].id);
@@ -185,9 +222,10 @@ function AddTaskModal({ open, onClose, clients, onAdd }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim() || !projectId) return;
-    onAdd({ title: title.trim(), description: description.trim(), projectId, priority });
+    onAdd({ title: title.trim(), description: description.trim(), projectId, priority, deadline: deadline || null });
     setTitle('');
     setDescription('');
+    setDeadline('');
     onClose();
   };
 
@@ -198,50 +236,108 @@ function AddTaskModal({ open, onClose, clients, onAdd }) {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Titre *</label>
-          <input
-            type="text"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            placeholder="Ex: Optimiser les campagnes Google Ads"
-            className={inputClasses}
-            autoFocus
-          />
+          <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Ex: Optimiser les campagnes Google Ads" className={inputClasses} autoFocus />
         </div>
         <div>
           <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Description</label>
-          <textarea
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-            placeholder="Détails de la tâche..."
-            rows={3}
-            className={inputClasses + " resize-none"}
-          />
+          <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Détails de la tâche..." rows={3} className={inputClasses + " resize-none"} />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Projet</label>
             <select value={projectId} onChange={e => setProjectId(e.target.value)} className={inputClasses}>
-              {clients.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
+              {clients.map(c => (<option key={c.id} value={c.id}>{c.name}</option>))}
             </select>
           </div>
           <div>
             <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Priorité</label>
             <select value={priority} onChange={e => setPriority(e.target.value)} className={inputClasses}>
-              {Object.entries(PRIORITY_CONFIG).map(([key, val]) => (
-                <option key={key} value={key}>{val.label}</option>
-              ))}
+              {Object.entries(PRIORITY_CONFIG).map(([key, val]) => (<option key={key} value={key}>{val.label}</option>))}
             </select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Deadline</label>
+            <input type="date" value={deadline} onChange={e => setDeadline(e.target.value)} className={inputClasses} />
           </div>
         </div>
         <div className="flex justify-end gap-3 pt-3 border-t border-slate-700/50">
-          <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700/30">
-            Annuler
-          </button>
-          <button type="submit" className="px-5 py-2 bg-yellow-500 text-slate-900 font-bold text-sm rounded-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-yellow-500/10">
-            Ajouter
-          </button>
+          <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700/30">Annuler</button>
+          <button type="submit" className="px-5 py-2 bg-yellow-500 text-slate-900 font-bold text-sm rounded-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-yellow-500/10">Ajouter</button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+// ─── Edit Task Modal ──────────────────────────────────────
+function EditTaskModal({ open, onClose, clients, task, onSave }) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [projectId, setProjectId] = useState('');
+  const [priority, setPriority] = useState('medium');
+  const [deadline, setDeadline] = useState('');
+
+  useEffect(() => {
+    if (open && task) {
+      setTitle(task.title || '');
+      setDescription(task.description || '');
+      setProjectId(task.projectId || '');
+      setPriority(task.priority || 'medium');
+      setDeadline(task.deadline ? task.deadline.slice(0, 10) : '');
+    }
+  }, [open, task]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!title.trim() || !task) return;
+    onSave(task.id, { title: title.trim(), description: description.trim(), projectId, priority, deadline: deadline || null });
+    onClose();
+  };
+
+  const inputClasses = "w-full bg-slate-900/80 border border-slate-600/50 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500/60 focus:ring-1 focus:ring-yellow-500/20 transition-all placeholder:text-gray-600";
+
+  return (
+    <Modal open={open} onClose={onClose} title="Modifier la tâche">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Titre *</label>
+          <input type="text" value={title} onChange={e => setTitle(e.target.value)} className={inputClasses} autoFocus />
+        </div>
+        <div>
+          <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Description / Notes</label>
+          <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Ajouter des notes, liens, détails..." rows={5} className={inputClasses + " resize-none"} />
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Projet</label>
+            <select value={projectId} onChange={e => setProjectId(e.target.value)} className={inputClasses}>
+              {clients.map(c => (<option key={c.id} value={c.id}>{c.name}</option>))}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Priorité</label>
+            <select value={priority} onChange={e => setPriority(e.target.value)} className={inputClasses}>
+              {Object.entries(PRIORITY_CONFIG).map(([key, val]) => (<option key={key} value={key}>{val.label}</option>))}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-400 mb-1.5 block uppercase tracking-wider">Deadline</label>
+            <input type="date" value={deadline} onChange={e => setDeadline(e.target.value)} className={inputClasses} />
+            {deadline && (
+              <button type="button" onClick={() => setDeadline('')} className="text-[10px] text-gray-500 hover:text-red-400 mt-1 transition-colors">
+                Retirer la deadline
+              </button>
+            )}
+          </div>
+        </div>
+        {task && (
+          <div className="text-[10px] text-gray-600 pt-2 border-t border-slate-700/30">
+            Créée le {formatDate(task.createdAt)} · Modifiée le {formatDate(task.updatedAt)}
+          </div>
+        )}
+        <div className="flex justify-end gap-3 pt-3 border-t border-slate-700/50">
+          <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700/30">Annuler</button>
+          <button type="submit" className="px-5 py-2 bg-yellow-500 text-slate-900 font-bold text-sm rounded-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-yellow-500/10">Enregistrer</button>
         </div>
       </form>
     </Modal>
@@ -483,6 +579,8 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('tasks');
   const [showAddTask, setShowAddTask] = useState(false);
   const [showAddInvoice, setShowAddInvoice] = useState(false);
+  const [showEditTask, setShowEditTask] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
   const [filterProject, setFilterProject] = useState('all');
   const fileInputRef = useRef(null);
 
@@ -498,6 +596,7 @@ export default function Dashboard() {
   const handleUpdateTask = (id, updates) => { store.updateTask(id, updates); setTasks(store.getTasks()); };
   const handleDeleteTask = (id) => { store.deleteTask(id); setTasks(store.getTasks()); };
   const handleMoveTask = (id, newStatus) => { store.updateTask(id, { status: newStatus }); setTasks(store.getTasks()); };
+  const handleEditTask = (task) => { setEditingTask(task); setShowEditTask(true); };
   const handleAddInvoice = (data) => { store.addInvoice(data); setInvoices(store.getInvoices()); };
   const handleUpdateInvoice = (id, updates) => { store.updateInvoice(id, updates); setInvoices(store.getInvoices()); };
   const handleDeleteInvoice = (id) => { store.deleteInvoice(id); setInvoices(store.getInvoices()); };
@@ -595,6 +694,7 @@ export default function Dashboard() {
           <div className="flex bg-slate-800/40 rounded-lg p-0.5 border border-slate-700/40">
             {[
               { key: 'tasks', label: 'Tâches', icon: ListTodo },
+              { key: 'done', label: 'Terminé', icon: CheckCircle2, count: tasks.filter(t => t.status === 'done').length },
               { key: 'invoices', label: 'Factures', icon: Receipt },
             ].map(tab => (
               <button
@@ -608,6 +708,11 @@ export default function Dashboard() {
               >
                 <tab.icon size={15} />
                 {tab.label}
+                {tab.count > 0 && (
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${activeTab === tab.key ? 'bg-slate-900/20 text-slate-900' : 'bg-green-500/15 text-green-400'}`}>
+                    {tab.count}
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -626,22 +731,24 @@ export default function Dashboard() {
                 ))}
               </select>
             </div>
-            <button
-              onClick={() => activeTab === 'tasks' ? setShowAddTask(true) : setShowAddInvoice(true)}
-              className="flex items-center gap-1.5 px-4 py-2 bg-yellow-500 text-slate-900 font-bold text-xs rounded-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-yellow-500/10"
-            >
-              <Plus size={14} strokeWidth={3} />
-              {activeTab === 'tasks' ? 'Nouvelle tâche' : 'Nouvelle facture'}
-            </button>
+            {activeTab !== 'done' && (
+              <button
+                onClick={() => activeTab === 'tasks' ? setShowAddTask(true) : setShowAddInvoice(true)}
+                className="flex items-center gap-1.5 px-4 py-2 bg-yellow-500 text-slate-900 font-bold text-xs rounded-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-yellow-500/10"
+              >
+                <Plus size={14} strokeWidth={3} />
+                {activeTab === 'tasks' ? 'Nouvelle tâche' : 'Nouvelle facture'}
+              </button>
+            )}
           </div>
         </div>
 
-        {/* ─── Tasks Tab: Kanban par client ─── */}
+        {/* ─── Tasks Tab: Kanban par client (todo + in_progress only) ─── */}
         {activeTab === 'tasks' && (
           <div className="space-y-6">
             {/* Column headers */}
-            <div className="grid grid-cols-3 gap-4">
-              {['todo', 'in_progress', 'done'].map(status => {
+            <div className="grid grid-cols-2 gap-4">
+              {['todo', 'in_progress'].map(status => {
                 const config = STATUS_CONFIG[status];
                 const Icon = config.icon;
                 const count = filteredTasks.filter(t => t.status === status).length;
@@ -661,24 +768,24 @@ export default function Dashboard() {
 
             {/* Rows per client */}
             {(() => {
+              const activeTasks = filteredTasks.filter(t => t.status !== 'done');
               const clientsWithTasks = (filterProject === 'all' ? activeClients : activeClients.filter(c => c.id === filterProject))
-                .filter(c => filteredTasks.some(t => t.projectId === c.id));
+                .filter(c => activeTasks.some(t => t.projectId === c.id));
 
               if (clientsWithTasks.length === 0) {
                 return (
                   <div className="text-center py-16 text-gray-600 border border-dashed border-slate-700/40 rounded-xl bg-slate-800/10">
                     <ListTodo size={28} className="mx-auto mb-3 opacity-30" />
-                    <p className="text-sm font-medium text-gray-500">Aucune tâche</p>
+                    <p className="text-sm font-medium text-gray-500">Aucune tâche active</p>
                     <p className="text-xs mt-1 text-gray-600">Clique sur "Nouvelle tâche" pour commencer</p>
                   </div>
                 );
               }
 
               return clientsWithTasks.map(client => {
-                const clientTasks = filteredTasks.filter(t => t.projectId === client.id);
+                const clientTasks = activeTasks.filter(t => t.projectId === client.id);
                 return (
                   <div key={client.id} className="bg-slate-800/15 border border-slate-700/20 rounded-xl overflow-hidden">
-                    {/* Client header */}
                     <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-slate-700/20">
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: client.color }} />
                       <span className="text-xs font-bold text-gray-300">{client.name}</span>
@@ -686,9 +793,8 @@ export default function Dashboard() {
                         {clientTasks.length} tâche{clientTasks.length > 1 ? 's' : ''}
                       </span>
                     </div>
-                    {/* 3-column kanban row */}
-                    <div className="grid grid-cols-3 gap-px bg-slate-700/10">
-                      {['todo', 'in_progress', 'done'].map(status => {
+                    <div className="grid grid-cols-2 gap-px bg-slate-700/10">
+                      {['todo', 'in_progress'].map(status => {
                         const statusTasks = clientTasks.filter(t => t.status === status);
                         return (
                           <div key={status} className="p-3 min-h-[80px] bg-[#0c1021]/50">
@@ -701,6 +807,7 @@ export default function Dashboard() {
                                   onUpdate={handleUpdateTask}
                                   onDelete={handleDeleteTask}
                                   onMove={handleMoveTask}
+                                  onEdit={handleEditTask}
                                   compact
                                 />
                               ))}
@@ -711,6 +818,65 @@ export default function Dashboard() {
                           </div>
                         );
                       })}
+                    </div>
+                  </div>
+                );
+              });
+            })()}
+          </div>
+        )}
+
+        {/* ─── Done Tab: Tâches terminées ─── */}
+        {activeTab === 'done' && (
+          <div className="space-y-3">
+            <h3 className="text-[11px] font-semibold text-gray-500 mb-3 uppercase tracking-wider flex items-center gap-2">
+              <CheckCircle2 size={13} className="text-green-500" />
+              Tâches terminées
+            </h3>
+            {(() => {
+              const doneTasks = (filterProject === 'all' ? tasks : tasks.filter(t => t.projectId === filterProject))
+                .filter(t => t.status === 'done')
+                .sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+
+              if (doneTasks.length === 0) {
+                return (
+                  <div className="text-center py-16 text-gray-600 border border-dashed border-slate-700/40 rounded-xl bg-slate-800/10">
+                    <CheckCircle2 size={28} className="mx-auto mb-3 opacity-30" />
+                    <p className="text-sm font-medium text-gray-500">Aucune tâche terminée</p>
+                  </div>
+                );
+              }
+
+              return doneTasks.map(task => {
+                const client = clients.find(c => c.id === task.projectId);
+                const priority = PRIORITY_CONFIG[task.priority] || PRIORITY_CONFIG.medium;
+                return (
+                  <div
+                    key={task.id}
+                    className="flex items-center gap-4 p-3.5 bg-slate-800/30 border border-slate-700/30 rounded-xl hover:border-slate-600/40 hover:bg-slate-800/40 transition-all duration-200 group cursor-pointer"
+                    onClick={() => handleEditTask(task)}
+                  >
+                    <div className="w-1 h-8 rounded-full shrink-0" style={{ backgroundColor: client?.color || '#666' }} />
+                    <CheckCircle2 size={16} className="text-green-500/60 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-300 line-through decoration-gray-600">{task.title}</p>
+                      {task.description && <p className="text-[11px] text-gray-600 mt-0.5 truncate">{task.description}</p>}
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {client && (
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md" style={{ backgroundColor: client.color + '18', color: client.color }}>
+                          {client.name}
+                        </span>
+                      )}
+                      <span className="text-[10px] text-gray-600">{formatDate(task.updatedAt)}</span>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleMoveTask(task.id, 'in_progress'); }}
+                        className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-lg bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 transition-colors font-bold opacity-0 group-hover:opacity-100"
+                        title="Remettre en cours"
+                      >
+                        <RotateCcw size={11} />
+                        Reprendre
+                      </button>
                     </div>
                   </div>
                 );
@@ -804,6 +970,7 @@ export default function Dashboard() {
       {/* Modals */}
       <AddTaskModal open={showAddTask} onClose={() => setShowAddTask(false)} clients={activeClients} onAdd={handleAddTask} />
       <AddInvoiceModal open={showAddInvoice} onClose={() => setShowAddInvoice(false)} clients={activeClients} onAdd={handleAddInvoice} />
+      <EditTaskModal open={showEditTask} onClose={() => { setShowEditTask(false); setEditingTask(null); }} clients={activeClients} task={editingTask} onSave={handleUpdateTask} />
     </div>
   );
 }
