@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>Clément Chappot · Présentation</title>
+    <link rel="icon" href="/clement-favicon.png" />
+    <style>@font-face{font-family:"Archivo";src:url("composition/fonts/archivo-latin-wdth-normal.woff2") format("woff2-variations");font-weight:100 900;font-stretch:62% 125%}@font-face{font-family:"Geist Mono";src:url("composition/fonts/geist-mono-latin-400-normal.woff2") format("woff2")}</style>
+    <style>
+      :root { --bg: #070706; --panel: #0e0d0c; --line: rgba(239,236,230,0.14); --text: #efece6; --muted: #85817a; --accent: #f0592b; --warm: #f0592b; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+      #stage-wrap { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; }
+      #stage { width: 1920px; height: 1080px; border: 0; transform-origin: center center; background: #0e0d0c; flex: none; pointer-events: none; }
+      html.light { --bg: #e6e2db; --panel: #f1eee8; --line: rgba(21,20,19,0.16); --text: #151413; --muted: #57534d; --accent: #dc4517; }
+      html.light #stage { background: #f1eee8; }
+      body.cursor-hidden { cursor: none; }
+
+      /* gate */
+      #gate { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; }
+      #gate form { width: 100%; max-width: 360px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 40px 32px; text-align: left; }
+      #gate h1 { font-weight: 800; font-variation-settings: "wdth" 125; text-transform: uppercase; font-size: 30px; letter-spacing: -0.01em; margin: 0 0 8px; }
+      #gate p { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+      #gate input { width: 100%; font-family: "Geist Mono", monospace; font-size: 18px; letter-spacing: 0.2em; padding: 12px 14px; border-radius: 6px; border: 1px solid var(--line); background: #070706; color: var(--text); outline: none; }
+      #gate input:focus { border-color: var(--accent); }
+      #gate button { margin-top: 12px; width: 100%; padding: 12px; font-size: 15px; font-weight: 500; border: 0; border-radius: 6px; background: var(--accent); color: #0e0d0c; font-weight: 600; cursor: pointer; transition: transform .2s cubic-bezier(.16,1,.3,1), background .2s; } #gate button:hover { background: #ff6a3a; } #gate button:active { transform: scale(0.98); }
+      #gate .err { color: var(--warm); font-size: 14px; min-height: 20px; margin-top: 10px; }
+
+      /* chrome */
+      #progress { position: fixed; left: 0; bottom: 0; height: 2px; background: var(--accent); width: 0; transition: width 0.4s ease; display: none; z-index: 5; }
+      #nav { position: fixed; right: 16px; bottom: 16px; display: none; gap: 8px; z-index: 6; opacity: 0; transition: opacity 0.3s; }
+      body:not(.cursor-hidden) #nav { opacity: 1; }
+      #nav button { background: rgba(14, 13, 12, 0.85); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; font-size: 15px; cursor: pointer; }
+      #nav button:hover { border-color: var(--accent); }
+
+      #timer { position: fixed; top: 14px; right: 16px; z-index: 7; display: none; font: 600 15px/1.2 ui-monospace, Consolas, monospace; background: rgba(14, 13, 12, 0.92); border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; }
+      #timer .late { color: var(--warm); }
+      #timer .ok { color: var(--accent); }
+      #notes { position: fixed; left: 16px; right: 16px; bottom: 16px; max-width: 900px; z-index: 7; display: none; background: rgba(14, 13, 12, 0.95); border: 1px solid var(--line); border-radius: 8px; padding: 14px 18px; font-size: 16px; line-height: 1.5; }
+      #notes b { color: var(--accent); }
+      #help { position: fixed; top: 14px; left: 16px; z-index: 7; display: none; font-size: 13px; color: var(--muted); background: rgba(14, 13, 12, 0.92); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; line-height: 1.6; }
+    </style>
+  </head>
+  <body>
+    <div id="gate">
+      <form id="gate-form" autocomplete="off">
+        <h1>Présentation privée</h1>
+        <p>Saisissez le code d'accès.</p>
+        <input id="code" type="password" inputmode="text" aria-label="Code d'accès" autofocus />
+        <button type="submit">Ouvrir</button>
+        <div class="err" id="err"></div>
+      </form>
+    </div>
+
+    <div id="stage-wrap"><iframe id="stage" title="Présentation" tabindex="-1"></iframe></div>
+    <div id="progress"></div>
+    <div id="nav">
+      <button id="prev" aria-label="Précédent">←</button>
+      <button id="next" aria-label="Suivant">→</button>
+      <button id="fs" aria-label="Plein écran">⛶</button>
+    </div>
+    <div id="timer"></div>
+    <div id="notes"></div>
+    <div id="help">
+      → / Espace / clic : suivant · ← : précédent<br />
+      F : plein écran · L : thème clair / sombre · T : chrono · N : notes · H : aide · Début : recommencer
+    </div>
+
+    <script>
+      (function () {
+        // Code d'accès (hash SHA-256, le code n'apparaît pas en clair dans la page)
+        var CODE_HASH = "61a64574432336c0e1a8e21b72bc485696fc852ac81e0b7e42f487d69312c323";
+
+        // Slides : début, durée cible, notes orales
+        var SLIDES = [
+          { s: 0, d: 30, rest: 3.6, notes: "Bonjour. 9 minutes. Profil touche-à-tout : 10 leviers que j'opère moi-même, 5 secteurs. Le fil rouge : de la stratégie à l'exécution." },
+          { s: 30, d: 80, rest: 31.3, notes: "<b>Un clic par poste</b> : Novahealth, CODE41 x3 (budgets, équipe, 6 marchés), Swiss Prime Lab, indépendant. <b>Dernier clic</b> : le repositionnement, choix assumé du terrain." },
+          { s: 110, d: 90, rest: 112.3, notes: "Stylla, compléments chiens et chats. Objectif abonnements, CPA dégressif vers 60-70 CHF, panier au même niveau. <b>Puis</b> parties prenantes : le marketing coordonne CEO, agence, logistique, SAV, vétérinaires, équipe vidéo." },
+          { s: 200, d: 80, rest: 204.8, notes: "Beta test été 2024 (faux produits, 20k CHF). Lancement mai 2025 CH + FR, 15 → 30k CHF/mois sur 4 mois. CPA 250 → 100 → ~80. <b>Clic</b> : récurrence modélisée après 3 mois, 80 % arrêtent au mois 2 (appétence, effet perçu), trouvé via enquêtes et SAV." },
+          { s: 280, d: 80, rest: 281.8, notes: "Un clic par leçon : prix du beta test, rétention dès le jour 1, <b>mix produits</b> : hydratation = CPA le plus bas mais presque aucune rétention ; arthrose, stress = CPA plus élevé mais forte rétention." },
+          { s: 360, d: 120, rest: 363.2, notes: "Meta et Google au quotidien, TikTok en test. <b>Clic 1</b> : « je vous montre un exemple concret », coach mental pour sportifs (anonyme), contexte + 3 actions. <b>Clic 2</b> : résultats, insister sur +1 600 € → +20k € de CA (réponse à « vous avez juste dépensé plus »)." },
+          { s: 480, d: 60, rest: 485, notes: "Citer leur phrase « On ne dirige pas bien ce qu'on ne pratique pas ». Programme complet. Culture du résultat. Merci, place à l'échange." },
+        ];
+        // Étapes de navigation : entrée de slide puis révélations internes
+        var FR = { 1: [[39.8, 41.1], [49.8, 51.1], [59.8, 61.1], [69.8, 71.1], [79.8, 81.1], [91.8, 93.5]], 2: [[124.8, 127.2]], 3: [[224.8, 227]], 4: [[299.6, 301.2], [319.6, 321.2]], 5: [[379.8, 382.8], [399.8, 402.8]] };
+        var STEPS = [];
+        SLIDES.forEach(function (sl, i) {
+          STEPS.push({ slide: i, from: i === 0 ? 0 : sl.s - 0.65, to: sl.rest });
+          (FR[i] || []).forEach(function (f) { STEPS.push({ slide: i, from: f[0], to: f[1] }); });
+        });
+        var TOTAL = 540;
+
+        var gate = document.getElementById("gate"), wrap = document.getElementById("stage-wrap"), stage = document.getElementById("stage");
+        var progress = document.getElementById("progress"), nav = document.getElementById("nav"), timerEl = document.getElementById("timer");
+        var notesEl = document.getElementById("notes"), helpEl = document.getElementById("help");
+        var idx = 0, tl = null, gsapW = null, startedAt = null, slideStartedAt = null, curTween = null;
+
+        async function sha(txt) {
+          var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt.trim().toUpperCase()));
+          return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+        }
+        function unlocked() { try { return sessionStorage.getItem("cc-deck") === "1"; } catch (e) { return false; } }
+
+        document.getElementById("gate-form").addEventListener("submit", async function (e) {
+          e.preventDefault();
+          var h = await sha(document.getElementById("code").value);
+          if (h === CODE_HASH) { try { sessionStorage.setItem("cc-deck", "1"); } catch (e2) {} open(); }
+          else document.getElementById("err").textContent = "Code incorrect.";
+        });
+
+        function fit() {
+          var k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+          stage.style.transform = "scale(" + k + ")";
+        }
+
+        function open() {
+          gate.style.display = "none";
+          wrap.style.display = "flex";
+          progress.style.display = nav.style.display = "block";
+          nav.style.display = "flex";
+          fit();
+          stage.src = "composition/index.html";
+          stage.onload = function () {
+            var w = stage.contentWindow;
+            var tries = 0;
+            (function waitTl() {
+              if (w.__timelines && w.__timelines.deck) {
+                tl = w.__timelines.deck; gsapW = w.gsap;
+                applyTheme();
+                // Bandeau d'outils (slide 6) : défilement continu indépendant des paliers de navigation
+                var trk = w.document.getElementById("s6-track");
+                if (trk) {
+                  tl.getTweensOf(trk).forEach(function (t) { t.kill(); });
+                  gsapW.fromTo(trk, { xPercent: 0 }, { xPercent: -50, duration: 70, ease: "none", repeat: -1 });
+                }
+                (w.document.fonts ? w.document.fonts.ready : Promise.resolve()).then(function () { go(0, false); });
+              } else if (tries++ < 100) setTimeout(waitTl, 50);
+            })();
+          };
+        }
+
+        var light = false;
+        try { light = localStorage.getItem("cc-deck-theme") === "light"; } catch (e) {}
+        function applyTheme() {
+          document.documentElement.classList.toggle("light", light);
+          try { stage.contentDocument.documentElement.classList.toggle("light", light); } catch (e) {}
+        }
+        applyTheme();
+
+        function render() {
+          var st = STEPS[idx];
+          progress.style.width = ((st.slide + 1) / SLIDES.length) * 100 + "%";
+          notesEl.innerHTML = "<b>" + (st.slide + 1) + "/7</b> · " + SLIDES[st.slide].notes;
+        }
+
+        function go(n, animate) {
+          if (!tl) return;
+          n = Math.max(0, Math.min(STEPS.length - 1, n));
+          var prevSlide = STEPS[idx] ? STEPS[idx].slide : -1;
+          idx = n;
+          var st = STEPS[n];
+          if (curTween) { curTween.kill(); curTween = null; }
+          if (animate) {
+            tl.seek(st.from, false);
+            curTween = tl.tweenFromTo(st.from, st.to, { ease: "none" });
+          } else {
+            tl.seek(st.to, false);
+          }
+          if (st.slide !== prevSlide) slideStartedAt = Date.now();
+          if (startedAt === null && n > 0) startedAt = Date.now();
+          render();
+        }
+        function next() { if (idx < STEPS.length - 1) go(idx + 1, true); }
+        function prev() { if (idx > 0) go(idx - 1, false); }
+
+        function fmt(ms) { var s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+        setInterval(function () {
+          if (timerEl.style.display !== "block") return;
+          var now = Date.now(), sl = SLIDES[STEPS[idx].slide];
+          var total = startedAt ? now - startedAt : 0, onSlide = slideStartedAt ? now - slideStartedAt : 0;
+          var target = sl.s + sl.d; // fin cible cumulée de cette slide (s)
+          var late = total / 1000 > target;
+          timerEl.innerHTML = "Total <span class='" + (total / 1000 > TOTAL ? "late" : "ok") + "'>" + fmt(total) + "</span> / 9:00 · Slide " + fmt(onSlide) + " / " + fmt(sl.d * 1000) +
+            " · <span class='" + (late ? "late" : "ok") + "'>" + (late ? "en retard" : "dans les temps") + "</span>";
+        }, 250);
+
+        document.getElementById("next").onclick = function (e) { e.stopPropagation(); next(); };
+        document.getElementById("prev").onclick = function (e) { e.stopPropagation(); prev(); };
+        document.getElementById("fs").onclick = function (e) { e.stopPropagation(); toggleFs(); };
+        function toggleFs() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+        function toggle(el) { el.style.display = el.style.display === "block" ? "none" : "block"; }
+
+        wrap.addEventListener("click", function () { next(); });
+        document.addEventListener("keydown", function (e) {
+          if (gate.style.display !== "none") return;
+          var k = e.key;
+          if (k === "ArrowRight" || k === " " || k === "PageDown" || k === "Enter") { e.preventDefault(); next(); }
+          else if (k === "ArrowLeft" || k === "PageUp" || k === "Backspace") { e.preventDefault(); prev(); }
+          else if (k === "Home") { startedAt = null; go(0, false); }
+          else if (k === "End") go(STEPS.length - 1, false);
+          else if (k === "f" || k === "F") toggleFs();
+          else if (k === "t" || k === "T") toggle(timerEl);
+          else if (k === "n" || k === "N") toggle(notesEl);
+          else if (k === "h" || k === "H") toggle(helpEl);
+          else if (k === "l" || k === "L") { light = !light; try { localStorage.setItem("cc-deck-theme", light ? "light" : "dark"); } catch (e2) {} applyTheme(); }
+          else if (k === "r" || k === "R") { startedAt = Date.now(); slideStartedAt = Date.now(); }
+        });
+
+        var hideT;
+        document.addEventListener("mousemove", function () {
+          document.body.classList.remove("cursor-hidden");
+          clearTimeout(hideT); hideT = setTimeout(function () { document.body.classList.add("cursor-hidden"); }, 2000);
+        });
+        window.addEventListener("resize", fit);
+
+        if (unlocked()) open();
+      })();
+    </script>
+  </body>
+</html>

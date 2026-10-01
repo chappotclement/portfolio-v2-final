@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Clément Chappot · bright</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Archivo"; src: url("fonts/archivo-latin-wdth-normal.woff2") format("woff2-variations"); font-weight: 100 900; font-stretch: 62% 125%; }
+      @font-face { font-family: "Geist Mono"; src: url("fonts/geist-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+
+      :root { --bg: #0e0d0c; --fg: #efece6; --mute: #99948c; --line: rgba(239, 236, 230, 0.16); --line2: rgba(239, 236, 230, 0.32); --sig: #f0592b; --sigbg: rgba(240, 89, 43, 0.16); }
+      html.light { --bg: #f1eee8; --fg: #151413; --mute: #57534d; --line: rgba(21, 20, 19, 0.16); --line2: rgba(21, 20, 19, 0.34); --sig: #dc4517; --sigbg: rgba(220, 69, 23, 0.14); }
+      html.light .ph-img { filter: grayscale(100%) contrast(1.05) brightness(1.02); }
+      #s3 svg g { stroke: var(--line2); }
+      #s4 svg line { stroke: var(--line2); }
+      #s4-line { stroke: var(--fg); }
+      #s4-band { fill: var(--sigbg); }
+      #s4 svg circle { fill: var(--sig); }
+      #s4 svg text { fill: var(--mute); }
+      #s4 svg text.sig { fill: var(--sig); }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 100%; height: 100%; background: var(--bg); }
+      body { color: var(--fg); font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 100; overflow: hidden; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
+
+      .scene { position: absolute; inset: 0; }
+      .inner { position: absolute; inset: 0; opacity: 0; }
+      .abs { position: absolute; margin: 0; }
+      .m { display: block; overflow: hidden; padding-top: 0.22em; margin-top: -0.22em; }
+      .mi { display: block; }
+      .hud { position: absolute; left: 96px; right: 96px; top: 48px; display: flex; justify-content: space-between; font-family: "Geist Mono", monospace; font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); }
+      .mono { font-family: "Geist Mono", monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+      .disp { font-weight: 800; font-variation-settings: "wdth" 125; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.88; margin: 0; }
+      .muted { color: var(--mute); }
+      .rule { position: absolute; height: 1px; background: var(--line); }
+      .num { font-variant-numeric: tabular-nums; }
+
+      #wipe { position: absolute; inset: 0; background: var(--sig); z-index: 10; }
+      #prog { position: absolute; left: 96px; right: 96px; bottom: 40px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; z-index: 5; }
+      .seg { display: block; height: 2px; background: var(--line); }
+      .seg i { display: block; width: 100%; height: 100%; background: var(--sig); }
+
+      /* S1 */
+      .ph { position: absolute; left: 1384px; top: 150px; width: 440px; height: 560px; overflow: hidden; }
+      .ph-img { position: absolute; inset: 0; background: url("assets/clement-photo.jpg") center 28% / cover; filter: grayscale(100%) contrast(1.08) brightness(0.95); }
+      .ph-blk { position: absolute; inset: 0; background: var(--sig); }
+      .stat .v { font-size: 104px; }
+      .stat p { font-size: 26px; color: var(--mute); margin: 18px 0 0; line-height: 1.3; }
+
+      .sk { display: block; border-top: 1px solid var(--line); padding: 14px 0 0; height: 104px; }
+      .sk i { display: block; font-style: normal; font-family: "Geist Mono", monospace; font-size: 15px; color: var(--sig); margin-bottom: 8px; }
+      .sk span { display: block; font-size: 22px; line-height: 1.25; }
+
+      /* S2 */
+      .tick { position: absolute; left: 96px; top: 170px; height: 230px; overflow: hidden; }
+      .tick-y { height: 230px; font-size: 236px; line-height: 230px; }
+      .row { position: absolute; left: 920px; width: 904px; height: 118px; display: grid; grid-template-columns: 90px 1fr 360px; gap: 24px; align-items: center; border-top: 1px solid var(--line); }
+      .row .yr { font-size: 18px; color: var(--mute); }
+      .row .co { font-size: 38px; font-weight: 600; line-height: 1.05; }
+      .row .co small { display: block; font-size: 23px; font-weight: 400; color: var(--mute); margin-top: 6px; }
+      .row .fx { font-size: 16px; white-space: nowrap; color: var(--mute); text-align: right; line-height: 1.5; }
+
+      /* S3 */
+      .outline { color: transparent; -webkit-text-stroke: 2px var(--fg); }
+      .obj .v { font-size: 46px; white-space: nowrap; font-variation-settings: "wdth" 100; }
+      .obj p { font-size: 23px; color: var(--mute); margin: 14px 0 0; line-height: 1.35; }
+      .hub { position: absolute; left: 1235px; top: 615px; width: 210px; height: 210px; border-radius: 50%; background: var(--sig); color: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      .hub b { font-weight: 800; font-variation-settings: "wdth" 110; text-transform: uppercase; font-size: 24px; letter-spacing: -0.01em; }
+      .hub span { font-family: "Geist Mono", monospace; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
+      .node { position: absolute; width: 230px; }
+      .node b { display: block; font-size: 25px; font-weight: 600; line-height: 1.15; }
+      .node span { display: block; font-size: 19px; color: var(--mute); margin-top: 4px; }
+      .node.l { text-align: right; }
+      .dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--fg); }
+
+      /* S4 */
+      .ev { position: absolute; top: 256px; width: 520px; }
+      .ev .d { font-family: "Geist Mono", monospace; font-size: 18px; letter-spacing: 0.12em; color: var(--mute); }
+      .ev b { display: block; font-size: 30px; font-weight: 600; margin-top: 10px; }
+      .ev span { display: block; font-size: 21px; color: var(--mute); margin-top: 6px; }
+      .evdot { position: absolute; top: 223px; width: 16px; height: 16px; border-radius: 50%; background: var(--sig); }
+      .bar { position: absolute; bottom: 150px; width: 100px; background: var(--sig); }
+      .barv { position: absolute; width: 100px; font-size: 40px; }
+      .barl { position: absolute; top: 944px; width: 100px; font-family: "Geist Mono", monospace; font-size: 16px; color: var(--mute); letter-spacing: 0.1em; }
+      .cause { position: absolute; left: 96px; width: 1500px; display: grid; grid-template-columns: 80px 1fr; border-top: 1px solid var(--line); padding-top: 18px; font-size: 30px; line-height: 1.35; }
+      .cause i { font-style: normal; font-family: "Geist Mono", monospace; font-size: 18px; color: var(--sig); padding-top: 8px; }
+
+      /* S5 */
+      .nt { position: absolute; left: 80px; top: 240px; height: 400px; overflow: hidden; }
+      .nt-y { height: 400px; font-size: 440px; line-height: 400px; }
+      .les { position: absolute; left: 900px; top: 250px; width: 924px; }
+      .les h3 { font-size: 60px; font-weight: 700; line-height: 1.05; margin: 0 0 30px; letter-spacing: -0.01em; }
+      .les p { font-size: 28px; line-height: 1.42; color: var(--mute); margin: 0 0 28px; }
+      .les .key { display: grid; grid-template-columns: 36px 1fr; font-size: 32px; line-height: 1.35; color: var(--fg); font-weight: 500; }
+      .les .key i { display: block; width: 14px; height: 14px; background: var(--sig); margin-top: 12px; }
+      .idx { position: absolute; top: 912px; font-family: "Geist Mono", monospace; font-size: 17px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+
+      .cmp { display: grid; grid-template-columns: 300px 1fr; column-gap: 24px; align-items: baseline; padding: 16px 0; border-top: 1px solid var(--line); }
+      .cmp:last-of-type { border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+      .cmp b { font-size: 26px; font-weight: 600; }
+      .cmp span { font-size: 26px; line-height: 1.35; color: var(--mute); }
+
+      /* S6 */
+      .band { position: absolute; left: 0; right: 0; top: 300px; height: 72px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; }
+      .track { position: absolute; left: 0; top: 0; height: 72px; display: flex; align-items: center; white-space: nowrap; font-family: "Geist Mono", monospace; font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase; }
+      .track span { padding: 0 28px; }
+      .track span.hl { color: var(--fg); }
+      .track span.lo { color: var(--mute); }
+      .step { position: absolute; left: 96px; width: 700px; display: grid; grid-template-columns: 64px 1fr; font-size: 28px; line-height: 1.35; }
+      .step i { font-style: normal; font-family: "Geist Mono", monospace; font-size: 18px; color: var(--sig); padding-top: 7px; }
+      .kr { position: absolute; left: 900px; width: 924px; height: 76px; display: grid; grid-template-columns: 190px 150px 1fr 240px 100px; column-gap: 20px; align-items: center; border-top: 1px solid var(--line); }
+      .kr .lab { font-size: 24px; color: var(--mute); }
+      .kr .from { font-size: 40px; color: var(--mute); text-align: right; white-space: nowrap; }
+      .kr .arr { position: relative; display: block; height: 2px; background: var(--sig); }
+      .kr .arr::after { content: ""; position: absolute; right: -2px; top: -6px; border-left: 12px solid var(--sig); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+      .kr .to { font-size: 52px; text-align: right; white-space: nowrap; }
+      .kr .dl { font-family: "Geist Mono", monospace; font-size: 22px; color: var(--sig); text-align: right; }
+      .kr.head { font-family: "Geist Mono", monospace; font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); border-top: 0; height: 40px; }
+      .kr.head .from, .kr.head .to, .kr.head .dl { font-family: "Geist Mono", monospace; font-size: 16px; font-weight: 400; color: var(--mute); }
+      .punch { position: absolute; left: 900px; top: 884px; width: 924px; height: 124px; }
+      .punch-bg { position: absolute; inset: 0; background: var(--sig); }
+      .punch-tx { position: absolute; left: 28px; right: 28px; top: 16px; color: var(--bg); }
+      .punch-tx b { display: block; font-weight: 800; font-variation-settings: "wdth" 125; text-transform: uppercase; font-size: 30px; letter-spacing: -0.01em; line-height: 1.05; }
+      .punch-tx span { display: block; font-size: 18px; margin-top: 8px; }
+
+      /* S7 */
+      .reason { position: absolute; left: 96px; width: 1300px; display: grid; grid-template-columns: 80px 1fr; border-top: 1px solid var(--line); padding-top: 18px; font-size: 30px; line-height: 1.35; }
+      .reason i { font-style: normal; font-family: "Geist Mono", monospace; font-size: 18px; color: var(--sig); padding-top: 8px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="deck" data-start="0" data-duration="540" data-width="1920" data-height="1080">
+      <!-- ================= S1 : ouverture ================= -->
+      <section id="s1" class="clip scene" data-start="0" data-duration="30" data-track-index="1">
+        <div class="inner" id="s1-in">
+          <div class="hud"><span class="s1-hud">Candidature · Chef·fe de programme média &amp; marketing</span><span class="s1-hud">bright · Lausanne</span></div>
+          <h1 class="disp abs" style="left: 96px; top: 160px; font-size: 168px">
+            <span class="m"><span class="mi s1-l">Clément</span></span>
+            <span class="m"><span class="mi s1-l">Chappot</span></span>
+          </h1>
+          <p class="abs mono muted s1-k" style="left: 96px; top: 486px; font-size: 16px">Profil touche-à-tout · de la stratégie à l'exécution</p>
+          <div class="abs" style="left: 96px; top: 526px; width: 1220px; display: grid; grid-template-columns: repeat(5, 1fr); column-gap: 20px"><div class="sk s1-sk"><i>01</i><span>Media buying à la performance</span></div><div class="sk s1-sk"><i>02</i><span>Automatisations CRM</span></div><div class="sk s1-sk"><i>03</i><span>Optimisation site et landings</span></div><div class="sk s1-sk"><i>04</i><span>Tracking et attribution</span></div><div class="sk s1-sk"><i>05</i><span>A/B testing</span></div><div class="sk s1-sk"><i>06</i><span>Influenceurs</span></div><div class="sk s1-sk"><i>07</i><span>Relations presse</span></div><div class="sk s1-sk"><i>08</i><span>SEO</span></div><div class="sk s1-sk"><i>09</i><span>Gestion des budgets</span></div><div class="sk s1-sk"><i>10</i><span>Dashboards de reporting</span></div></div>
+          <div class="ph"><div class="ph-img" id="s1-img"></div><div class="ph-blk" id="s1-blk"></div></div>
+          <div class="rule" id="s1-hr" style="left: 96px; right: 96px; top: 772px"></div>
+          <div class="abs" style="left: 96px; right: 96px; top: 812px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px">
+            <div class="stat"><span class="m"><span class="mi disp v num"><span class="count" data-from="0" data-to="8" data-suf="+">8+</span></span></span><p class="s1-p">ans d'acquisition digitale</p></div>
+            <div class="stat"><span class="m"><span class="mi disp v num"><span class="count" data-from="0" data-to="10" data-suf="">10</span></span></span><p class="s1-p">leviers que j'opère moi-même</p></div>
+            <div class="stat"><span class="m"><span class="mi disp v num"><span class="count" data-from="0" data-to="5" data-suf="">5</span></span></span><p class="s1-p">secteurs : santé, horlogerie, animalier, coaching, déco</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= S2 : parcours ================= -->
+      <section id="s2" class="clip scene" data-start="30" data-duration="80" data-track-index="1">
+        <div class="inner" id="s2-in">
+          <div class="hud"><span>02 / 07 · Parcours</span><span>2017 · 2026</span></div>
+          <div class="tick"><div id="s2-col" class="disp num">
+            <div class="tick-y">2017</div><div class="tick-y">2018</div><div class="tick-y">2021</div><div class="tick-y">2023</div><div class="tick-y">2024</div><div class="tick-y">2026</div>
+          </div></div>
+          <p class="abs" id="s2-st" style="left: 96px; top: 540px; width: 720px; font-size: 54px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em">
+            <span class="m"><span class="mi s2-w">Des postes de direction,</span></span>
+            <span class="m"><span class="mi s2-w">puis un choix assumé :</span></span>
+            <span class="m"><span class="mi s2-w">revenir à l'opérationnel.</span></span>
+          </p>
+          <p class="abs s2-note muted" style="left: 96px; top: 760px; width: 700px; font-size: 26px; line-height: 1.4">C'est en opérant les comptes moi-même que j'apporte le plus de valeur.</p>
+          <div class="abs" id="s2-mk" style="left: 900px; top: 190px; width: 4px; height: 118px; background: var(--sig)"></div>
+          <div class="row s2-r" style="top: 190px"><span class="yr mono">2017</span><span class="co">Novahealth<small>Webmarketeur</small></span><span class="fx mono">+150k € / mois</span></div>
+          <div class="row s2-r" style="top: 308px"><span class="yr mono">2018</span><span class="co">CODE41<small>Digital Media Buyer</small></span><span class="fx mono">~110k CHF / mois · 5 lang.</span></div>
+          <div class="row s2-r" style="top: 426px"><span class="yr mono">2021</span><span class="co">CODE41<small>Digital Media Manager</small></span><span class="fx mono">~180k CHF / mois · 4 pers.</span></div>
+          <div class="row s2-r" style="top: 544px"><span class="yr mono">2023</span><span class="co">CODE41<small>Responsable marketing</small></span><span class="fx mono">6 marchés · équipe de 10</span></div>
+          <div class="row s2-r" style="top: 662px"><span class="yr mono">2024</span><span class="co">Swiss Prime Lab<small>Responsable marketing</small></span><span class="fx mono">Lancement de marque</span></div>
+          <div class="row s2-r" style="top: 780px; border-bottom: 1px solid var(--line)"><span class="yr mono">2026</span><span class="co">Indépendant<small>Consultant marketing</small></span><span class="fx mono">Meta · Google · tracking</span></div>
+        </div>
+      </section>
+
+      <!-- ================= S3 : Stylla cadrage ================= -->
+      <section id="s3" class="clip scene" data-start="110" data-duration="90" data-track-index="1">
+        <div class="inner" id="s3-in">
+          <div class="hud"><span>03 / 07 · Programme piloté de bout en bout</span><span>Swiss Prime Lab · 2024-2026</span></div>
+          <h2 class="disp abs outline" style="left: 90px; top: 130px; font-size: 230px"><span class="m"><span class="mi" id="s3-brand">Stylla</span></span></h2>
+          <p class="abs m" style="left: 96px; top: 368px; width: 1100px; font-size: 32px; line-height: 1.35; color: var(--mute)"><span class="mi" id="s3-sub">Lancement d'une marque de compléments pour chiens et chats, au business model récurrent : la rentabilité dépend de la durée d'abonnement.</span></p>
+          <div class="abs" style="left: 96px; top: 500px; width: 700px; display: grid; grid-template-columns: 330px 330px; column-gap: 40px; row-gap: 56px">
+            <div class="obj s3-o"><span class="disp v num">60-70</span><p>CHF de CPA cible</p></div>
+            <div class="obj s3-o"><span class="disp v num">3 mois</span><p>de cible dégressive pour optimiser</p></div>
+            <div class="obj s3-o"><span class="disp v">Récurrent</span><p>panier ≈ CPA : la marge vient des mois d'abonnement suivants</p></div>
+            <div class="obj s3-o"><span class="disp v">CH · FR</span><p>au lancement, en français et en allemand, puis toute l'Europe</p></div>
+          </div>
+          <svg class="abs" style="left: 0; top: 0; width: 1920px; height: 1080px" viewBox="0 0 1920 1080">
+            <g stroke="rgba(239,236,230,0.35)" stroke-width="1.5" fill="none">
+              <path class="s3-ln" d="M 1340 720 L 1100 500" />
+              <path class="s3-ln" d="M 1340 720 L 1580 500" />
+              <path class="s3-ln" d="M 1340 720 L 1060 720" />
+              <path class="s3-ln" d="M 1340 720 L 1610 720" />
+              <path class="s3-ln" d="M 1340 720 L 1100 940" />
+              <path class="s3-ln" d="M 1340 720 L 1580 940" />
+            </g>
+          </svg>
+          <div class="hub" id="s3-hub"><b>Marketing</b><span>coordination</span></div>
+          <div class="dot s3-d" style="left: 1093px; top: 493px"></div>
+          <div class="dot s3-d" style="left: 1573px; top: 493px"></div>
+          <div class="dot s3-d" style="left: 1053px; top: 713px"></div>
+          <div class="dot s3-d" style="left: 1603px; top: 713px"></div>
+          <div class="dot s3-d" style="left: 1093px; top: 933px"></div>
+          <div class="dot s3-d" style="left: 1573px; top: 933px"></div>
+          <div class="node l s3-n" style="left: 846px; top: 470px"><b>CEO</b><span>Budget, positionnement, prix</span></div>
+          <div class="node s3-n" style="left: 1604px; top: 470px"><b>Agence branding</b><span>Identité, packaging</span></div>
+          <div class="node l s3-n" style="left: 806px; top: 690px"><b>Resp. logistique</b><span>Stock, disponibilité</span></div>
+          <div class="node s3-n" style="left: 1634px; top: 690px; width: 200px"><b>Service clients</b><span>Retours, enquêtes</span></div>
+          <div class="node l s3-n" style="left: 846px; top: 910px"><b>Vétérinaires</b><span>Allégations, caution</span></div>
+          <div class="node s3-n" style="left: 1604px; top: 910px"><b>Équipe vidéo</b><span>Tournage, montage, interviews, UGC</span></div>
+        </div>
+      </section>
+
+      <!-- ================= S4 : planning & resultats ================= -->
+      <section id="s4" class="clip scene" data-start="200" data-duration="80" data-track-index="1">
+        <div class="inner" id="s4-in">
+          <div class="hud"><span>04 / 07 · Planning, budget, résultats</span><span>Stylla</span></div>
+          <div id="s4-base">
+            <div class="abs" id="s4-trk" style="left: 96px; top: 230px; width: 1728px; height: 1px; background: var(--line2)"></div>
+            <div class="evdot s4-dt" style="left: 96px"></div>
+            <div class="evdot s4-dt" style="left: 700px"></div>
+            <div class="evdot s4-dt" style="left: 1300px"></div>
+            <div class="ev s4-ev" style="left: 96px"><span class="d">Été 2024</span><b>Market beta test</b><span>Faux produits, 20k CHF, prix 19.90 / 29.90 CHF</span></div>
+            <div class="ev s4-ev" style="left: 700px"><span class="d">Mai 2025</span><b>Lancement CH + FR</b><span>59.90 / 69.90 CHF, tests d'axes et de landings</span></div>
+            <div class="ev s4-ev" style="left: 1300px"><span class="d">Mois 1 à 4</span><b>Scale progressif</b><span>Budget par paliers, diversification des marchés</span></div>
+
+            <p class="abs mono muted s4-t" style="left: 96px; top: 470px; font-size: 16px">Budget média · CHF / mois</p>
+            <div class="bar s4-b" style="left: 96px; height: 150px"></div>
+            <div class="bar s4-b" style="left: 236px; height: 200px"></div>
+            <div class="bar s4-b" style="left: 376px; height: 250px"></div>
+            <div class="bar s4-b" style="left: 516px; height: 300px"></div>
+            <div class="barv disp num s4-bv" style="left: 96px; top: 830px">15k</div>
+            <div class="barv disp num s4-bv" style="left: 236px; top: 780px">20k</div>
+            <div class="barv disp num s4-bv" style="left: 376px; top: 730px">25k</div>
+            <div class="barv disp num s4-bv" style="left: 516px; top: 680px">30k</div>
+            <div class="barl" style="left: 96px">M1</div><div class="barl" style="left: 236px">M2</div><div class="barl" style="left: 376px">M3</div><div class="barl" style="left: 516px">M4</div>
+
+            <p class="abs mono muted s4-t" style="left: 820px; top: 470px; font-size: 16px">CPA · CHF</p>
+            <div class="abs disp num" style="right: 96px; top: 452px; font-size: 96px; text-align: right"><span id="s4-read">250</span></div>
+            <svg class="abs" style="left: 820px; top: 520px; width: 1004px; height: 440px" viewBox="0 0 1004 440">
+              <rect id="s4-band" x="0" y="330" width="1004" height="32" fill="rgba(240,89,43,0.16)" />
+              <text class="sig" x="10" y="352" fill="#f0592b" font-size="15" font-family="Geist Mono" letter-spacing="2">CIBLE 60-70</text>
+              <line x1="0" y1="400" x2="1004" y2="400" stroke="rgba(239,236,230,0.2)" />
+              <path id="s4-line" d="M 60 40 C 220 250, 360 282, 520 285 S 800 312, 940 318" fill="none" stroke="#efece6" stroke-width="3" />
+              <g class="s4-pt"><circle cx="60" cy="40" r="7" fill="#f0592b" /><text x="84" y="48" fill="#85817a" font-size="18" font-family="Geist Mono">250</text><text x="60" y="428" fill="#85817a" font-size="15" font-family="Geist Mono" text-anchor="middle" letter-spacing="2">TESTS</text></g>
+              <g class="s4-pt"><circle cx="520" cy="285" r="7" fill="#f0592b" /><text x="520" y="262" fill="#85817a" font-size="18" font-family="Geist Mono" text-anchor="middle">100</text><text x="520" y="428" fill="#85817a" font-size="15" font-family="Geist Mono" text-anchor="middle" letter-spacing="2">OPTIMISATIONS</text></g>
+              <g class="s4-pt"><circle cx="940" cy="318" r="7" fill="#f0592b" /><text x="940" y="296" fill="#85817a" font-size="18" font-family="Geist Mono" text-anchor="middle">~80</text><text x="940" y="428" fill="#85817a" font-size="15" font-family="Geist Mono" text-anchor="middle" letter-spacing="2">A/B TESTS</text></g>
+            </svg>
+          </div>
+          <h3 class="disp abs" style="left: 96px; top: 250px; font-size: 104px">
+            <span class="m"><span class="mi s4-s">80 % des abonnés</span></span>
+            <span class="m"><span class="mi s4-s">arrêtent au mois 2.</span></span>
+          </h3>
+          <div class="cause s4-c" style="top: 540px"><i>01</i><span>Récurrence modélisée en dashboards seulement après 3 mois : le signal est arrivé tard.</span></div>
+          <div class="cause s4-c" style="top: 660px"><i>02</i><span>L'animal refuse le produit, alors que la facilité d'administration était une promesse clé.</span></div>
+          <div class="cause s4-c" style="top: 780px"><i>03</i><span>Effet pas assez perçu. Diagnostic : enquêtes clients et appels du service client.</span></div>
+        </div>
+      </section>
+
+      <!-- ================= S5 : lecons ================= -->
+      <section id="s5" class="clip scene" data-start="280" data-duration="80" data-track-index="1">
+        <div class="inner" id="s5-in">
+          <div class="hud"><span>05 / 07 · Ce que je ferais différemment</span><span>Stylla</span></div>
+          <p class="abs m" style="left: 96px; top: 150px; font-size: 40px; font-weight: 500"><span class="mi" id="s5-intro">Trois choses que je ferais autrement.</span></p>
+          <div class="nt"><div id="s5-col" class="disp outline num"><div class="nt-y">01</div><div class="nt-y">02</div><div class="nt-y">03</div></div></div>
+          <div class="les" id="s5-l1"><h3>Écouter le beta test avant de fixer les prix.</h3><p>Testé à 19.90 et 29.90 CHF, lancé à 59.90 et 69.90 CHF pour coller à un positionnement premium.</p><div class="key"><i></i><span>Tester le prix réel avant de le figer.</span></div></div>
+          <div class="les" id="s5-l2"><h3>Mesurer la rétention dès le premier abonné.</h3><p>Cohortes et retours clients dès le jour 1, même avec peu de volume.</p><div class="key"><i></i><span>Sur un abonnement, c'est la rétention qui fixe le CPA acceptable.</span></div></div>
+          <div class="les" id="s5-l3"><h3>Pousser plusieurs produits avant d'élire le best-seller.</h3><p>On a tout misé sur un seul produit, choisi parce qu'il se vendait le mieux.</p>
+            <div class="cmp s5-c"><b>Hydratation</b><span>CPA le plus bas, mais presque aucune rétention.</span></div>
+            <div class="cmp s5-c" style="border-bottom: 1px solid var(--line); margin-bottom: 28px"><b>Problématiques ciblées</b><span>Arthrose, stress : CPA plus élevé, mais une rétention importante.</span></div>
+            <div class="key"><i></i><span>Juger un produit sur la valeur d'un abonné, pas sur son CPA.</span></div></div>
+          <div class="rule" style="left: 96px; right: 96px; top: 890px"></div>
+          <div class="abs" id="s5-ul" style="left: 96px; top: 889px; width: 560px; height: 3px; background: var(--sig)"></div>
+          <div class="idx" style="left: 96px">01 · Prix</div>
+          <div class="idx" style="left: 680px">02 · Rétention</div>
+          <div class="idx" style="left: 1264px">03 · Mix produits</div>
+        </div>
+      </section>
+
+      <!-- ================= S6 : leviers & cas ================= -->
+      <section id="s6" class="clip scene" data-start="360" data-duration="120" data-track-index="1">
+        <div class="inner" id="s6-in">
+          <div class="hud"><span>06 / 07 · Leviers opérés au quotidien</span><span>Leviers · puis un cas concret</span></div>
+          <p class="abs" style="left: 96px; top: 130px; width: 1500px; font-size: 64px; font-weight: 600; line-height: 1.05; letter-spacing: -0.015em">
+            <span class="m"><span class="mi s6-h">Meta Ads et Google Ads :</span></span>
+            <span class="m"><span class="mi s6-h">je les opère moi-même, chaque jour.</span></span>
+          </p>
+          <div class="band" id="s6-band"><div class="track" id="s6-track">
+            <span class="hl">Meta Ads</span><span class="lo">/</span><span class="hl">Google Ads</span><span class="lo">Search · Shopping · PMax</span><span class="lo">/</span><span class="hl">GTM</span><span class="lo">/</span><span class="hl">GA4</span><span class="lo">/</span><span class="hl">CAPI</span><span class="lo">/</span><span class="hl">Merchant Center</span><span class="lo">/</span><span class="hl">BigQuery</span><span class="lo">/</span><span class="lo">TikTok Ads · tests</span><span class="lo">/</span>
+            <span class="hl">Meta Ads</span><span class="lo">/</span><span class="hl">Google Ads</span><span class="lo">Search · Shopping · PMax</span><span class="lo">/</span><span class="hl">GTM</span><span class="lo">/</span><span class="hl">GA4</span><span class="lo">/</span><span class="hl">CAPI</span><span class="lo">/</span><span class="hl">Merchant Center</span><span class="lo">/</span><span class="hl">BigQuery</span><span class="lo">/</span><span class="lo">TikTok Ads · tests</span><span class="lo">/</span>
+          </div></div>
+          <div class="abs" id="s6-lvb" style="left: 96px; top: 450px; width: 1728px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 96px">
+            <div class="s6-lvc" style="border-top: 1px solid var(--line); padding-top: 28px"><p class="disp" style="font-size: 64px">Meta Ads</p><p style="font-size: 28px; line-height: 1.45; color: var(--mute); margin: 22px 0 0">Structure de comptes, créas et A/B tests, audiences, Conversions API. Campagnes lead gen, e-commerce et VSL.</p></div>
+            <div class="s6-lvc" style="border-top: 1px solid var(--line); padding-top: 28px"><p class="disp" style="font-size: 64px">Google Ads</p><p style="font-size: 28px; line-height: 1.45; color: var(--mute); margin: 22px 0 0">Search, Shopping, Performance Max, flux Merchant Center multi-pays.</p></div>
+            <div class="s6-lvc" style="grid-column: 1 / -1; margin-top: 64px; border-top: 1px solid var(--line); padding-top: 22px; display: grid; grid-template-columns: 420px 1fr 1fr; column-gap: 40px; align-items: baseline">
+              <p class="mono muted" style="font-size: 16px; margin: 0">Également opérés par le passé</p>
+              <p style="font-size: 30px; font-weight: 600; margin: 0">Native Ads <span style="font-weight: 400; color: var(--mute)">· Outbrain, Taboola</span></p>
+              <p style="font-size: 30px; font-weight: 600; margin: 0">TikTok Ads</p>
+            </div>
+          </div>
+          <div class="abs" id="s6-xl" style="left: 96px; top: 404px; width: 1728px; height: 3px; background: var(--sig)"></div>
+          <h3 class="disp abs" style="left: 96px; top: 428px; font-size: 46px"><span class="m"><span class="mi" id="s6-x">Exemple concret d'optimisation · Meta Ads</span></span></h3>
+          <p class="abs mono muted s6-c" style="left: 96px; top: 494px; font-size: 16px">Coach mental pour sportifs · lead gen · client anonymisé</p>
+          <p class="abs muted s6-c" style="left: 96px; top: 536px; width: 700px; font-size: 26px; line-height: 1.4">Avant : tracking peu fiable, budget dispersé, chiffre d'affaires bloqué autour de 8k € par mois.</p>
+          <div class="abs" id="s6-vl" style="left: 96px; top: 650px; width: 1px; height: 330px; background: var(--line2)"></div>
+          <div class="step s6-a" style="top: 650px; padding-left: 28px"><i>01</i><span>Mesure fiabilisée : UTM par pub, le CRM comme source de vérité.</span></div>
+          <div class="step s6-a" style="top: 760px; padding-left: 28px"><i>02</i><span>A/B tests créas, budget basculé sur les gagnantes.</span></div>
+          <div class="step s6-a" style="top: 870px; padding-left: 28px"><i>03</i><span>Automatisation refaite, relances WhatsApp avant chaque RDV.</span></div>
+
+          <div class="kr head s6-k" style="top: 520px"><span>Indicateur</span><span class="from">Avant</span><span></span><span class="to">Après</span><span class="dl">Écart</span></div>
+          <div class="kr s6-k" style="top: 560px"><span class="lab">Coût par lead</span><span class="from disp num">105 €</span><span class="arr s6-ar"></span><span class="to disp num"><span class="count" data-from="105" data-to="14" data-pre="" data-suf=" €">14 €</span></span><span class="dl">÷ 7,5</span></div>
+          <div class="kr s6-k" style="top: 636px"><span class="lab">Leads / mois</span><span class="from disp num">11</span><span class="arr s6-ar"></span><span class="to disp num"><span class="count" data-from="11" data-to="200" data-pre="" data-suf="">200</span></span><span class="dl">× 18</span></div>
+          <div class="kr s6-k" style="top: 712px"><span class="lab">RDV honorés</span><span class="from disp num">40 %</span><span class="arr s6-ar"></span><span class="to disp num"><span class="count" data-from="40" data-to="51" data-pre="" data-suf=" %">51 %</span></span><span class="dl">+11 pts</span></div>
+          <div class="kr s6-k" style="top: 788px; border-bottom: 1px solid var(--line)"><span class="lab">CA / mois</span><span class="from disp num">8k €</span><span class="arr s6-ar"></span><span class="to disp num"><span class="count" data-from="8" data-to="28" data-pre="" data-suf="k €">28k €</span></span><span class="dl">× 3,5</span></div>
+          <div class="punch"><div class="punch-bg" id="s6-pbg"></div><div class="punch-tx" id="s6-ptx"><b>+1 600 € investis par mois</b><b>+20 000 € de CA par mois</b><span>Dépense Meta de 1,1k à 2,7k € par mois : le rendement a progressé en scalant.</span></div></div>
+        </div>
+      </section>
+
+      <!-- ================= S7 : pourquoi bright ================= -->
+      <section id="s7" class="clip scene" data-start="480" data-duration="60" data-track-index="1">
+        <div class="inner" id="s7-in">
+          <div class="hud"><span>07 / 07 · Pourquoi bright</span><span>clement-chappot.com</span></div>
+          <p class="abs" style="left: 96px; top: 150px; width: 1560px; font-size: 80px; font-weight: 600; line-height: 1.04; letter-spacing: -0.02em">
+            <span class="m"><span class="mi s7-q">« On ne dirige pas bien</span></span>
+            <span class="m"><span class="mi s7-q">ce qu'on ne pratique pas. »</span></span>
+          </p>
+          <p class="abs mono muted s7-src" style="left: 96px; top: 350px; font-size: 16px">Extrait de l'annonce · c'est exactement le rôle que je cherche</p>
+          <div class="reason s7-r" style="top: 450px"><i>01</i><span>Piloter un programme entier et opérer un levier moi-même, au même niveau d'exigence.</span></div>
+          <div class="reason s7-r" style="top: 560px"><i>02</i><span>Stratégie, tracking, parcours, contenus : ce que j'ai fait pour une marque, à faire vivre pour plusieurs clients.</span></div>
+          <div class="reason s7-r" style="top: 670px"><i>03</i><span>Une culture où la data décide, appliquée jusqu'à vos propres entreprises.</span></div>
+          <h2 class="disp abs" style="left: 90px; top: 810px; font-size: 190px"><span class="m"><span class="mi" id="s7-merci">Merci.</span></span></h2>
+        </div>
+      </section>
+
+      <div id="prog"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
+      <div id="wipe"></div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const S = [0, 30, 110, 200, 280, 360, 480];
+      const X = "expo.out";
+      const rise = (sel, at, o = {}) =>
+        tl.fromTo(sel, { yPercent: 170 }, { yPercent: 0, duration: o.d ?? 1.1, ease: o.e ?? X, stagger: o.st ?? 0.08 }, at);
+      const fade = (sel, at, o = {}) =>
+        tl.fromTo(sel, { opacity: 0, y: o.y ?? 24 }, { opacity: 1, y: 0, duration: o.d ?? 0.9, ease: o.e ?? X, stagger: o.st ?? 0 }, at);
+      const counts = (scope, at, gap) =>
+        document.querySelectorAll(scope + " .count").forEach((el, i) => {
+          const o = { v: Number(el.dataset.from) };
+          tl.to(o, { v: Number(el.dataset.to), duration: 1.6, ease: "power3.out",
+            onUpdate: () => { el.textContent = (el.dataset.pre || "") + Math.round(o.v) + (el.dataset.suf || ""); } }, at + i * gap);
+        });
+
+      // ---------- scene switching + wipes + progress ----------
+      tl.fromTo("#wipe", { xPercent: 100 }, { xPercent: 100, duration: 0.01 }, 0);
+      tl.fromTo("#s1-in", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
+      S.forEach((s, i) => {
+        tl.fromTo("#prog .seg:nth-child(" + (i + 1) + ") i", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.8, ease: "power3.inOut" }, s + 0.3);
+        if (i === 0) return;
+        tl.fromTo("#wipe", { xPercent: 100 }, { xPercent: 0, duration: 0.5, ease: "power4.in", immediateRender: false }, s - 0.6);
+        tl.set("#s" + i + "-in", { opacity: 0 }, s - 0.1);
+        tl.set("#s" + (i + 1) + "-in", { opacity: 1 }, s - 0.1);
+        tl.fromTo("#wipe", { xPercent: 0 }, { xPercent: -100, duration: 0.6, ease: "power4.out", immediateRender: false }, s - 0.1);
+      });
+
+      // ---------- S1 ----------
+      fade(".s1-hud", 0.2, { y: 0, d: 0.6 });
+      rise(".s1-l", 0.35, { d: 1.3, st: 0.12 });
+      tl.fromTo(".s1-l", { fontVariationSettings: "'wdth' 62" }, { fontVariationSettings: "'wdth' 125", duration: 1.8, ease: "expo.inOut", stagger: 0.12 }, 0.35);
+      fade(".s1-k", 1.1, { y: 0, d: 0.6 });
+      fade(".s1-sk", 1.2, { st: 0.07, y: 18 });
+      tl.fromTo("#s1-blk", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.55, ease: "power4.inOut" }, 0.6);
+      tl.fromTo("#s1-img", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 1.15);
+      tl.fromTo("#s1-blk", { scaleX: 1 }, { scaleX: 0, transformOrigin: "100% 50%", duration: 0.65, ease: "power4.inOut", immediateRender: false }, 1.2);
+      tl.fromTo("#s1-img", { scale: 1.12 }, { scale: 1, duration: 28, ease: "power1.out" }, 1.15);
+      tl.fromTo("#s1-hr", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 1.2, ease: "power3.inOut" }, 1.4);
+      rise("#s1 .stat .mi", 1.7, { st: 0.12 });
+      fade(".s1-p", 1.9, { st: 0.12, y: 12 });
+      counts("#s1", 1.7, 0.12);
+
+      // ---------- S2 ----------
+      const YR = [30.3, 40, 50, 60, 70, 80];
+      rise("#s2-col", 30.1, { d: 0.9 });
+      tl.fromTo("#s2-mk", { scaleY: 0 }, { scaleY: 1, transformOrigin: "50% 0%", duration: 0.5, ease: X }, 30.3);
+      document.querySelectorAll(".s2-r").forEach((r, i) => {
+        tl.fromTo(r, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.8, ease: X }, YR[i]);
+        if (i > 0) {
+          tl.fromTo("#s2-col", { y: -230 * (i - 1) }, { y: -230 * i, duration: 0.7, ease: "expo.inOut", immediateRender: false }, YR[i] - 0.1);
+          tl.fromTo("#s2-mk", { y: 118 * (i - 1) }, { y: 118 * i, duration: 0.7, ease: "expo.inOut", immediateRender: false }, YR[i] - 0.1);
+        }
+      });
+      rise(".s2-w", 92, { st: 0.1 });
+      fade(".s2-note", 92.5, { y: 12 });
+
+      // ---------- S3 ----------
+      rise("#s3-brand", 110.1, { d: 1.2 });
+      tl.fromTo("#s3-brand", { fontVariationSettings: "'wdth' 62" }, { fontVariationSettings: "'wdth' 125", duration: 1.6, ease: "expo.inOut" }, 110.1);
+      rise("#s3-sub", 110.7);
+      fade(".s3-o", 111.1, { st: 0.12 });
+      tl.fromTo("#s3-hub", { scale: 0 }, { scale: 1, duration: 0.9, ease: "back.out(1.6)" }, 125);
+      tl.fromTo(".s3-ln", { strokeDasharray: 400, strokeDashoffset: 400 }, { strokeDashoffset: 0, duration: 0.9, ease: "power3.inOut", stagger: 0.08 }, 125.4);
+      tl.fromTo(".s3-d", { scale: 0 }, { scale: 1, duration: 0.5, ease: "back.out(2)", stagger: 0.08 }, 126.1);
+      fade(".s3-n", 126.2, { st: 0.08, y: 12 });
+
+      // ---------- S4 ----------
+      tl.fromTo("#s4-trk", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 1.4, ease: "power3.inOut" }, 200.1);
+      tl.fromTo(".s4-dt", { scale: 0 }, { scale: 1, duration: 0.5, ease: "back.out(2)", stagger: 0.35 }, 200.4);
+      fade(".s4-ev", 200.5, { st: 0.35, y: 16 });
+      fade(".s4-t", 201.4, { y: 0, d: 0.6 });
+      tl.fromTo(".s4-b", { scaleY: 0 }, { scaleY: 1, transformOrigin: "50% 100%", duration: 0.9, ease: X, stagger: 0.12 }, 201.6);
+      fade(".s4-bv", 201.9, { st: 0.12, y: 16 });
+      tl.fromTo("#s4-line", { strokeDasharray: 1100, strokeDashoffset: 1100 }, { strokeDashoffset: 0, duration: 2.6, ease: "power2.inOut" }, 202);
+      tl.fromTo(".s4-pt", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 1.0 }, 202.1);
+      const cpa = { v: 250 }, readEl = document.getElementById("s4-read");
+      tl.fromTo(cpa, { v: 250 }, { v: 80, duration: 2.6, ease: "power2.inOut",
+        onUpdate: () => { readEl.textContent = (cpa.v < 81 ? "~" : "") + Math.round(cpa.v); } }, 202);
+      tl.fromTo("#s4-base", { opacity: 1 }, { opacity: 0.04, duration: 0.8, ease: "power2.out", immediateRender: false }, 225);
+      rise(".s4-s", 225.2, { d: 1.1, st: 0.1 });
+      fade(".s4-c", 225.9, { st: 0.15, y: 16 });
+
+      // ---------- S5 ----------
+      rise("#s5-intro", 280.1);
+      rise("#s5-col", 280.2, { d: 1.1 });
+      fade("#s5-l1", 280.6, { y: 30 });
+      tl.fromTo("#s5-ul", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.8, ease: "power3.inOut" }, 280.8);
+      tl.fromTo(["#s5-l2", "#s5-l3"], { opacity: 0 }, { opacity: 0, duration: 0.01 }, 280);
+      [[300, 1], [320, 2]].forEach(([t, k]) => {
+        tl.fromTo("#s5-l" + k, { opacity: 1, y: 0 }, { opacity: 0, y: -30, duration: 0.45, ease: "power2.in", immediateRender: false }, t - 0.2);
+        tl.fromTo("#s5-col", { y: -400 * (k - 1) }, { y: -400 * k, duration: 0.9, ease: "expo.inOut", immediateRender: false }, t - 0.2);
+        tl.fromTo("#s5-ul", { x: 584 * (k - 1) }, { x: 584 * k, duration: 0.9, ease: "expo.inOut", immediateRender: false }, t - 0.2);
+        tl.fromTo("#s5-l" + (k + 1), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, ease: X, immediateRender: false }, t + 0.2);
+      });
+      fade(".s5-c", 320.6, { st: 0.2, y: 14 });
+
+      // ---------- S6 ----------
+      rise(".s6-h", 360.1, { st: 0.1 });
+      tl.fromTo("#s6-band", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 1, ease: "power3.inOut" }, 360.5);
+      tl.fromTo("#s6-track", { xPercent: 0 }, { xPercent: -50, duration: 119, ease: "none" }, 360.5);
+      fade(".s6-lvc", 361.6, { st: 0.15, y: 20 });
+      tl.fromTo("#s6-lvb", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in", immediateRender: false }, 379.75);
+      tl.fromTo("#s6-xl", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.9, ease: "power4.inOut" }, 380);
+      rise("#s6-x", 380.2, { d: 1 });
+      fade(".s6-c", 380.5, { st: 0.12, y: 12 });
+      tl.fromTo("#s6-vl", { scaleY: 0 }, { scaleY: 1, transformOrigin: "50% 0%", duration: 1.2, ease: "power3.inOut" }, 380.8);
+      fade(".s6-a", 380.9, { st: 0.2, y: 16 });
+      fade(".s6-k", 400, { st: 0.1, y: 16 });
+      tl.fromTo(".s6-ar", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.7, ease: "power3.inOut", stagger: 0.12 }, 400.3);
+      counts("#s6", 400.8, 0.12);
+      tl.fromTo("#s6-pbg", { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.8, ease: "power4.inOut" }, 401.2);
+      fade("#s6-ptx", 401.8, { y: 14 });
+
+      // ---------- S7 ----------
+      rise(".s7-q", 480.1, { d: 1.2, st: 0.12 });
+      fade(".s7-src", 480.9, { y: 0 });
+      fade(".s7-r", 481.3, { st: 0.18, y: 16 });
+      rise("#s7-merci", 482.6, { d: 1.2 });
+      tl.fromTo("#s7-merci", { fontVariationSettings: "'wdth' 62" }, { fontVariationSettings: "'wdth' 125", duration: 1.8, ease: "expo.inOut" }, 482.6);
+
+      window.__timelines["deck"] = tl;
+    </script>
+  </body>
+</html>
